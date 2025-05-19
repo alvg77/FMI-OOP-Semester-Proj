@@ -1,7 +1,11 @@
 #include <iostream>
 
-int main() {
-    std::cout << "Hello World!" << std::endl;
+#include "game_map/GameMap.hpp"
 
-    return 0;
+int main() {
+  const GameMap map;
+
+  map.displayMap();
+
+  return 0;
 }

@@ -1,0 +1,3 @@
+/.venv/
+/conan_provider.cmake
+/build/
