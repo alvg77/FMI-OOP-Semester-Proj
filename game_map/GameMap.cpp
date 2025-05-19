@@ -1,7 +1,3 @@
-//
-// Created by Alek on 5/17/2025.
-//
-
 #include "GameMap.hpp"
 
 #include <ctime>
