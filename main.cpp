@@ -2,10 +2,12 @@
 
 #include "game_map/GameMap.hpp"
 
+
 int main() {
-  const GameMap map;
+  GameMap map;
 
   map.displayMap();
 
   return 0;
+
 }

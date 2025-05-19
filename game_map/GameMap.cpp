@@ -16,8 +16,10 @@ GameMap::GameMap()
       height(0),
       monsters(0),
       treasures(0),
+      currentLevel(1),
       currentMap(nullptr),
-      currentLevel(1) {
+      playerX(0),
+      playerY(0) {
   loadNextMap();
 }
 
@@ -26,7 +28,9 @@ GameMap::GameMap(const GameMap& other)
       height(other.height),
       monsters(other.monsters),
       treasures(other.treasures),
-      currentLevel(other.currentLevel) {
+      currentLevel(other.currentLevel),
+      playerX(other.playerX),
+      playerY(other.playerY) {
   currentMap = new char*[height];
   for (unsigned i = 0; i < height; ++i) {
     currentMap[i] = new char[width];
@@ -99,10 +103,27 @@ void GameMap::loadNextMap() {
   std::vector<std::pair<unsigned, unsigned>> freeSpaces;
   currentMap = new char*[height];
   unsigned row = 0;
+
+  if (!jsonData["grid"].is_array()) {
+    throw std::invalid_argument("Invalid type used for grid!");
+  }
+
+  if (jsonData["grid"].size() != height) {
+    throw std::invalid_argument("Grid height is incorrect!");
+  }
+
   for (json::const_iterator it = jsonData["grid"].cbegin();
        it < jsonData["grid"].cend(); ++it) {
     currentMap[row] = new char[width];
     unsigned col = 0;
+
+    if (!it->is_array()) {
+      throw std::invalid_argument("Invalid inner grid!");
+    }
+
+    if (it->size() != width) {
+      throw std::invalid_argument("Invalid grid width!");
+    }
 
     for (json::const_iterator inner = it->cbegin(); inner < it->cend();
          ++inner) {
@@ -115,21 +136,29 @@ void GameMap::loadNextMap() {
           currentMap[row][col] = '#';
           break;
         default:
-          throw std::invalid_argument("Invalid level grid!");
+          throw std::invalid_argument("Invalid grid element!");
       }
       ++col;
     }
     ++row;
   }
 
-  placeOnMapRandom(freeSpaces, 'M', monsters);
-  placeOnMapRandom(freeSpaces, 'T', treasures);
+  playerX = freeSpaces.begin()->first;
+  playerY = freeSpaces.begin()->second;
+  freeSpaces.erase(freeSpaces.begin());
+
+  placeEntitiesOnMapRandom(freeSpaces, 'M', monsters);
+  placeEntitiesOnMapRandom(freeSpaces, 'T', treasures);
 }
 
 void GameMap::displayMap() const {
   for (unsigned i = 0; i < height; ++i) {
     for (unsigned j = 0; j < width; ++j) {
-      std::cout << currentMap[i][j];
+      if (playerX == j && playerY == i) {
+        std::cout << " P ";
+      } else {
+        std::cout << " " << currentMap[i][j] << " ";
+      }
     }
     std::cout << std::endl;
   }
@@ -144,7 +173,46 @@ void GameMap::displayMap() const {
   }
 }
 
-void GameMap::placeOnMapRandom(
+bool GameMap::movePlayer(const MoveDirection direction) {
+  switch (direction) {
+    case MoveDirection::UP:
+      if (static_cast<long>(playerY - 1) >= 0 &&
+          canMoveThere(playerX, playerY - 1)) {
+        playerY -= 1;
+        return true;
+      }
+      return false;
+    case MoveDirection::DOWN:
+      if (playerY + 1 < height && canMoveThere(playerX, playerY + 1)) {
+        playerY += 1;
+        return true;
+      }
+      return false;
+    case MoveDirection::LEFT:
+      if (static_cast<long>(playerX - 1) >= 0 &&
+          canMoveThere(playerX - 1, playerY)) {
+        playerX -= 1;
+        return true;
+      }
+      return false;
+    case MoveDirection::RIGHT:
+      if (playerX + 1 < width && canMoveThere(playerX + 1, playerY)) {
+        playerX += 1;
+        return true;
+      }
+      return false;
+    default:
+      throw std::invalid_argument("Invalid movement direction!");
+  }
+}
+
+bool GameMap::startFight() const { return currentMap[playerY][playerX] == 'M'; }
+
+bool GameMap::lootTreasure() const {
+  return currentMap[playerY][playerX] == 'T';
+}
+
+void GameMap::placeEntitiesOnMapRandom(
     const std::vector<std::pair<unsigned, unsigned>>& freeSpaces, char c,
     const unsigned amountToBePlaced) {
   const unsigned int seed = time(nullptr);
@@ -162,6 +230,10 @@ void GameMap::placeOnMapRandom(
     } while (currentMap[row][col] != '.');
     currentMap[freeSpaces.at(idx).first][freeSpaces.at(idx).second] = c;
   }
+}
+
+bool GameMap::canMoveThere(unsigned x, unsigned y) const {
+  return currentMap[y][x] != '#';
 }
 
 void swap(GameMap& a, GameMap& b) noexcept {

@@ -4,6 +4,8 @@
 #include <string>
 #include <vector>
 
+#include "MoveDirection.hpp"
+
 class Item;
 
 class GameMap {
@@ -15,6 +17,9 @@ class GameMap {
 
   void loadNextMap();
   void displayMap() const;
+  bool movePlayer(MoveDirection direction);
+  bool startFight() const;
+  bool lootTreasure() const;
 
   friend void swap(GameMap& a, GameMap& b) noexcept;
 
@@ -22,12 +27,19 @@ class GameMap {
   unsigned width, height;
   unsigned monsters;
   unsigned treasures;
-  char** currentMap;
   unsigned currentLevel;
   std::vector<Item*> treasurePool;
+  char** currentMap;
+
+  unsigned playerX, playerY;
+
   static const std::string levelFileLocation;
 
-  void placeOnMapRandom(const std::vector<std::pair<unsigned, unsigned>>& freeSpaces, char c, unsigned amountToBePlaced) const;
+  void placeEntitiesOnMapRandom(
+      const std::vector<std::pair<unsigned, unsigned>>& freeSpaces, char c,
+      unsigned amountToBePlaced);
+
+  bool canMoveThere(unsigned x, unsigned y) const;
 };
 
 void swap(GameMap& a, GameMap& b) noexcept;
