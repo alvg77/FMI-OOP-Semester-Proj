@@ -2,8 +2,12 @@
 
 #include <iostream>
 
+#include "../../Game/Interactions/InteractionsManager.hpp"
+
 bool Wall::onStep(Hero& hero) {
   std::cout << "You have encountered a wall!" << std::endl;
+  InteractionsManager::promptContinue();
+
   return false;
 }
 

@@ -26,8 +26,8 @@ Map::Map(const unsigned n)
 }
 
 Map::~Map() {
-  for (unsigned i = 0; i < cols; ++i) {
-    for (unsigned j = 0; j < rows; ++j) {
+  for (unsigned i = 0; i < rows; ++i) {
+    for (unsigned j = 0; j < cols; ++j) {
       delete grid[i][j];
     }
   }
@@ -36,33 +36,34 @@ Map::~Map() {
 bool Map::moveHero(Hero& hero, MoveDirection direction) {
   switch (direction) {
     case MoveDirection::UP:
-      if (isWithinBounds(playerRow, playerCol - 1) &&
-          grid[playerCol - 1][playerRow]->step(hero)) {
-        playerCol -= 1;
-        grid[playerCol][playerRow]->interact(hero);
+      if (isWithinBounds(playerRow - 1, playerCol) &&
+          grid[playerRow - 1][playerCol]->step(hero)) {
+        playerRow -= 1;
+        grid[playerRow][playerCol]->interact(hero);
         return true;
       }
       return false;
     case MoveDirection::DOWN:
-      if (isWithinBounds(playerRow, playerCol + 1) &&
-          grid[playerCol + 1][playerRow]->step(hero)) {
-        playerCol += 1;
-        grid[playerCol][playerRow]->interact(hero);
+      if (isWithinBounds(playerRow + 1, playerCol) &&
+          grid[playerRow + 1][playerCol]->step(hero)) {
+        playerRow += 1;
+        grid[playerRow][playerCol]->interact(hero);
         return true;
       }
       return false;
     case MoveDirection::LEFT:
-      if (isWithinBounds(playerRow - 1, playerCol) &&
-          grid[playerCol][playerRow - 1]->step(hero)) {
-        playerRow -= 1;
-        grid[playerCol][playerRow]->interact(hero);
+      if (isWithinBounds(playerRow, playerCol - 1) &&
+          grid[playerRow][playerCol - 1]->step(hero)) {
+        playerCol -= 1;
+        grid[playerRow][playerCol]->interact(hero);
         return true;
       }
       return false;
     case MoveDirection::RIGHT:
-      if (isWithinBounds(playerRow + 1, playerCol) &&
-          grid[playerCol][playerRow + 1]->step(hero)) {
-        grid[playerCol][playerRow]->interact(hero);
+      if (isWithinBounds(playerRow, playerCol + 1) &&
+          grid[playerRow][playerCol + 1]->step(hero)) {
+        playerCol += 1;
+        grid[playerRow][playerCol]->interact(hero);
         return true;
       }
       return false;
@@ -76,10 +77,12 @@ bool Map::hasReachedEnd() const {
 }
 
 void Map::display(std::ostream& os) const {
-  for (unsigned i = 0; i < cols; ++i) {
-    for (unsigned j = 0; j < rows; ++j) {
-      if (j == playerRow && i == playerCol) {
+  for (unsigned i = 0; i < rows; ++i) {
+    for (unsigned j = 0; j < cols; ++j) {
+      if (i == playerRow && j == playerCol) {
         os << " P ";
+      } else if (i == finishRow && j == finishCol) {
+        os << " F ";
       } else {
         os << " " << grid[i][j]->getSymbol() << " ";
       }
@@ -88,7 +91,7 @@ void Map::display(std::ostream& os) const {
   }
 }
 
-void Map::loadLevel(unsigned n) {
+void Map::loadLevel(const unsigned n) {
   const std::string levelPath =
       Map::levelFileLocation + "level" + std::to_string(n) + ".json";
 
@@ -101,6 +104,19 @@ void Map::loadLevel(unsigned n) {
   cols = level.cols;
   grid = std::move(level.grid);
 
+  playerRow = level.freeSpaces.front().first;
+  playerCol = level.freeSpaces.front().second;
+  level.freeSpaces.erase(level.freeSpaces.begin());
+
+  finishRow = level.freeSpaces.back().first;
+  finishCol = level.freeSpaces.back().second;
+  level.freeSpaces.pop_back();
+
+  if (level.freeSpaces.size() < monsters + treasures) {
+    throw std::runtime_error(
+        "Not enough free spaces to place player and finish.");
+  }
+
   for (Item* item : level.items) {
     placeEntityAtRandom(item, level.freeSpaces);
     delete item;
@@ -110,19 +126,6 @@ void Map::loadLevel(unsigned n) {
     placeEntityAtRandom(monster, level.freeSpaces);
     delete monster;
   }
-
-  if (level.freeSpaces.size() < 2) {
-    throw std::runtime_error(
-        "Not enough free spaces to place player and finish.");
-  }
-
-  playerRow = level.freeSpaces.front().first;
-  playerCol = level.freeSpaces.front().second;
-  level.freeSpaces.erase(level.freeSpaces.begin());
-
-  finishRow = level.freeSpaces.back().first;
-  finishCol = level.freeSpaces.back().second;
-  level.freeSpaces.pop_back();
 }
 
 void Map::placeEntityAtRandom(

@@ -4,11 +4,14 @@
 
 #include "../../Entity/Creature/Hero/Hero.hpp"
 #include "../../Entity/Item/Item.hpp"
+#include "../../Util/Util.hpp"
 
-void InteractionsManager::promptHeroItemEquip(Hero& hero, Item* item) {
+void InteractionsManager::promptHeroItemEquip(Hero& hero, const Item* item) {
+  Util::clearTerminal();
+
   char choice;
 
-  std::cout << "You have found " << item->getName() << ", "
+  std::cout << "You have found " << *item << ", "
             << getItemTypeName(item->getItemType()) << std::endl;
 
   std::cout << "Your current loadout:" << std::endl;
@@ -24,6 +27,8 @@ void InteractionsManager::promptHeroItemEquip(Hero& hero, Item* item) {
 }
 
 void InteractionsManager::promptHeroLevelUp(Hero& hero) {
+  Util::clearTerminal();
+
   unsigned str, mn, hp;
 
   std::cout << "You have reached the end of the level! Level up your character!"
@@ -43,4 +48,9 @@ void InteractionsManager::promptHeroLevelUp(Hero& hero) {
     std::cin >> hp;
     std::cin.ignore(1000, '\n');
   } while (!hero.levelUp(hp, str, mn));
+}
+
+void InteractionsManager::promptContinue() {
+  std::cout << "Press enter to continue...";
+  std::cin.get();
 }

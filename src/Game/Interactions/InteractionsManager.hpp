@@ -6,8 +6,9 @@ struct Item;
 
 class InteractionsManager {
  public:
-  static void promptHeroItemEquip(Hero& hero, Item* item);
+  static void promptHeroItemEquip(Hero& hero, const Item* item);
   static void promptHeroLevelUp(Hero& hero);
+  static void promptContinue();
 };
 
 #endif

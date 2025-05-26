@@ -3,6 +3,7 @@
 #include <iostream>
 
 #include "../../../Game/Combat/CombatManager.hpp"
+#include "../../../Game/Interactions/InteractionsManager.hpp"
 #include "../Hero/Hero.hpp"
 
 Monster::Monster(const std::string& name, const unsigned level,
@@ -14,6 +15,7 @@ Monster::Monster(const std::string& name, const unsigned level,
 }
 
 void Monster::dealDamage(Hero& hero) const {
+  std::cout << "Debug: " << getStrength() << " " << getMana() << std::endl;
   hero.takeDamage(static_cast<double>(getStrength() + getMana()) / 2);
 }
 
@@ -22,12 +24,15 @@ void Monster::takeDamage(const double damage) {
 }
 
 void Monster::levelUp() {
+  std::cout << "DEBUG: bad" << std::endl;
   scalesDefenceMult += 0.05;
-  Creature::levelUp(10, 10, 10);
+  Creature::levelUp(5, 5, 5);
 }
 
 bool Monster::onStep(Hero& hero) {
   std::cout << "You have encountered a " << getName() << std::endl;
+  InteractionsManager::promptContinue();
+
   return true;
 }
 

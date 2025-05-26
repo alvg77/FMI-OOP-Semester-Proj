@@ -12,6 +12,7 @@ Hero::Hero(const std::string& name, const unsigned level, const Stats& stats,
       armor(nullptr),
       weapon(nullptr),
       spell(nullptr) {
+
   if (armor != nullptr) {
     this->armor = dynamic_cast<Item*>(armor->clone());
   }
@@ -86,7 +87,7 @@ void Hero::takeDamage(double damage) {
 
 void Hero::heal() {
   if (getCurrentHealth() < static_cast<double>(getMaxHealth()) / 2) {
-    Creature::increaseCurrentHealth(static_cast<double>(getMaxHealth()) / 2);
+    Creature::increaseCurrentHealth(static_cast<double>(getMaxHealth()) / 2 - getCurrentHealth());
   }
 }
 
@@ -102,11 +103,11 @@ void Hero::equipItem(const Item* item) {
       break;
     case ItemType::WEAPON:
       delete weapon;
-      armor = dynamic_cast<Item*>(item->clone());
+      weapon = dynamic_cast<Item*>(item->clone());
       break;
     case ItemType::SPELL:
       delete spell;
-      armor = dynamic_cast<Item*>(item->clone());
+      spell = dynamic_cast<Item*>(item->clone());
       break;
   }
 }

@@ -16,6 +16,8 @@ ItemType Item::getItemType() const { return itemType; }
 
 bool Item::onStep(Hero& hero) {
   std::cout << *this << std::endl;
+  InteractionsManager::promptContinue();
+
   return true;
 }
 
@@ -42,7 +44,7 @@ std::ostream& operator<<(std::ostream& os, const Item& item) {
       itemType = "Spell";
       break;
     default:
-      itemType = "";
+      itemType = "Armor";
   }
 
   os << "<" << item.name << ", Mult: " << item.bonus << ", " << itemType << ">";

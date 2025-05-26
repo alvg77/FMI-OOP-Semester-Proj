@@ -127,27 +127,27 @@
   "treasure_pool": [
     {
       "name": "Steel Greatsword",
-      "bonus": 25,
+      "bonus": 0.14,
       "type": "weapon"
     },
     {
       "name": "Lightning Bolt",
-      "bonus": 27,
+      "bonus": 0.16,
       "type": "spell"
     },
     {
       "name": "Elven Bow",
-      "bonus": 22,
+      "bonus": 0.12,
       "type": "weapon"
     },
     {
       "name": "Steel Warhammer",
-      "bonus": 28,
+      "bonus": 0.16,
       "type": "weapon"
     },
     {
       "name": "Ice Spike",
-      "bonus": 27,
+      "bonus": 0.13,
       "type": "spell"
     }
   ],

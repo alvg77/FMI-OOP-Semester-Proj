@@ -4,9 +4,9 @@
       "name": "Goblin",
       "level": 2,
       "stats": {
-        "strength": 6,
-        "mana": 3,
-        "maxHealth": 25
+        "strength": 4,
+        "mana": 6,
+        "maxHealth": 55
       }
     },
     {
@@ -15,7 +15,7 @@
       "stats": {
         "strength": 5,
         "mana": 2,
-        "maxHealth": 20
+        "maxHealth": 50
       }
     },
     {
@@ -24,7 +24,7 @@
       "stats": {
         "strength": 10,
         "mana": 1,
-        "maxHealth": 35
+        "maxHealth": 65
       }
     },
     {
@@ -33,7 +33,7 @@
       "stats": {
         "strength": 3,
         "mana": 12,
-        "maxHealth": 18
+        "maxHealth": 40
       }
     }
   ]

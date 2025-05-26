@@ -39,7 +39,6 @@ void GameManager::runGameLoop() {
   bool gameCompleted = false;
   while (!gameCompleted) {
     Util::clearTerminal();
-
     map->display();
     map->moveHero(*hero, ControlsManager::getMovementInputs());
 

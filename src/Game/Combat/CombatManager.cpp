@@ -4,25 +4,32 @@
 #include <random>
 
 #include "../../Entity/Creature/Hero/Hero.hpp"
+#include "../../Util/Util.hpp"
 
 void CombatManager::initiateCombat(Hero& hero, Monster& monster) {
+  Util::clearTerminal();
+
   std::cout << "Battle between " << hero.getName() << " and "
             << monster.getName() << " has started!" << std::endl;
 
   const CoinToss result = coinToss();
   bool heroTurn = (result == CoinToss::HEADS);
 
-  std::cout << (heroTurn ? "Hero" : "Monster") << " goes first!\n";
+  std::cout << "\n" << (heroTurn ? "Hero" : "Monster") << " goes first!\n";
 
   while (hero.isAlive() && monster.isAlive()) {
     if (heroTurn) {
+      std::cout << "\nHero makes an attack!" << std::endl;
       playerAttack(hero, monster);
     } else {
+      std::cout << "\nMonster makes an attack!" << std::endl;
       monsterAttack(hero, monster);
     }
 
-    std::cout << "Hero HP: " << hero.getCurrentHealth() << std::endl;
-    std::cout << "Monster HP: " << monster.getCurrentHealth() << std::endl;
+    std::cout << "Hero HP: " << hero.getCurrentHealth() << "/"
+              << hero.getMaxHealth() << std::endl;
+    std::cout << "Monster HP: " << monster.getCurrentHealth() << "/"
+              << monster.getMaxHealth() << "\n" << std::endl;
 
     heroTurn = !heroTurn;
   }
@@ -30,10 +37,12 @@ void CombatManager::initiateCombat(Hero& hero, Monster& monster) {
   if (hero.isAlive()) {
     std::cout << hero.getName() << " has defeated " << monster.getName() << "!"
               << std::endl;
+    hero.heal();
   } else {
     std::cout << monster.getName() << " has defeated " << hero.getName() << "!"
               << std::endl;
   }
+
   std::cout << "Press enter to continue...";
   std::cin.get();
 }

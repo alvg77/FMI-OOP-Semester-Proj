@@ -27,7 +27,7 @@ bool Creature::isAlive() const { return currentHealth > 0; }
 
 std::string Creature::getName() const { return name; }
 
-double Creature::getCurrentHealth() const { return currentHealth; }
+double Creature::getCurrentHealth() const { return currentHealth > 0 ? currentHealth : 0; }
 
 unsigned Creature::getStrength() const { return stats.strength; }
 

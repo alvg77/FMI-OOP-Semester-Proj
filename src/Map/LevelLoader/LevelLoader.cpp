@@ -114,7 +114,7 @@ std::vector<Item*> LevelLoader::loadItems(const json& treasurePool,
   for (unsigned i = 0; i < n; ++i) {
     const json& itemJson = pool[i];
     std::string name = itemJson["name"].get<std::string>();
-    double bonus = itemJson["bonus"].get<double>();
+    const double bonus = itemJson["bonus"].get<double>();
     std::string typeStr = itemJson["type"].get<std::string>();
 
     Item* item = new Item(name, bonus, getItemType(typeStr));
