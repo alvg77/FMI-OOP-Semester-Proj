@@ -1,0 +1,40 @@
+{
+  "monsters": [
+    {
+      "name": "Goblin",
+      "level": 2,
+      "stats": {
+        "strength": 6,
+        "mana": 3,
+        "maxHealth": 25
+      }
+    },
+    {
+      "name": "Skeleton Archer",
+      "level": 3,
+      "stats": {
+        "strength": 5,
+        "mana": 2,
+        "maxHealth": 20
+      }
+    },
+    {
+      "name": "Orc Warrior",
+      "level": 4,
+      "stats": {
+        "strength": 10,
+        "mana": 1,
+        "maxHealth": 35
+      }
+    },
+    {
+      "name": "Dark Mage",
+      "level": 5,
+      "stats": {
+        "strength": 3,
+        "mana": 12,
+        "maxHealth": 18
+      }
+    }
+  ]
+}
