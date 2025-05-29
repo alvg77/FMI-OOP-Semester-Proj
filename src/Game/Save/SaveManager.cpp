@@ -29,7 +29,7 @@ void SaveManager::save(const GameContext& ctx) {
   jsonWriter["hero"] = ctx.hero->toJson();
   jsonWriter["map"] = ctx.map->toJson();
 
-  file << jsonWriter;
+  file << jsonWriter.dump(2);
 
   file.close();
 }

@@ -62,7 +62,8 @@ void GameManager::runGameLoop() {
       std::cout << "Game successfully saved!" << std::endl;
       InteractionsManager::promptContinue();
     } else if (action == GameAction::EXIT) {
-      std::cout << "Exiting game" << std::endl;
+      SaveManager::save(ctx);
+      std::cout << "Exiting game. Progress saved." << std::endl;
       InteractionsManager::promptContinue();
       exit(0);
     } else {
@@ -86,6 +87,8 @@ void GameManager::runGameLoop() {
 
         delete ctx.map;
         ctx.map = new Map(level);
+
+        SaveManager::save(ctx);
       }
     }
   }
