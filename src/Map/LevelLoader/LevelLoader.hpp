@@ -26,8 +26,7 @@ class LevelLoader {
                         std::vector<std::vector<Cell*>>& grid,
                         std::vector<std::pair<unsigned, unsigned>>& freeSpaces,
                         unsigned cols);
-  static std::vector<NPEntity*> loadItems(const json& treasurePool,
-                                           unsigned n);
+  static std::vector<NPEntity*> loadItems(unsigned count, unsigned n);
   static std::vector<NPEntity*> loadMonsters(unsigned count, unsigned n);
   static void placeEntitiesAtRandomAndClear(
       std::vector<NPEntity*>& entities,
@@ -37,6 +36,7 @@ class LevelLoader {
   static std::mt19937 rng;
   static const std::string levelFileLocation;
   static const std::string monstersFileLocation;
+  static const std::string itemsFileLocation;
 };
 
 #endif  // LEVELLOADER_HPP

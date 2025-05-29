@@ -18,7 +18,7 @@ class GameManager {
   void runGameLoop();
 
  private:
-  static constexpr unsigned nlevels = 5;
+  static constexpr unsigned nlevels = 4;
   static const std::string saveFileLocation;
 
   unsigned level;

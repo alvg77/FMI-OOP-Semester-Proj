@@ -1,0 +1,79 @@
+{
+  "items": [
+    {
+      "name": "Steel Greatsword",
+      "bonus": 0.2,
+      "type": "weapon"
+    },
+    {
+      "name": "Greater Lightning Bolt",
+      "bonus": 0.22,
+      "type": "spell"
+    },
+    {
+      "name": "Steel Mace",
+      "bonus": 0.2,
+      "type": "weapon"
+    },
+    {
+      "name": "Steel Glaive",
+      "bonus": 0.23,
+      "type": "weapon"
+    },
+    {
+      "name": "Greater Fireball",
+      "bonus": 0.22,
+      "type": "spell"
+    },
+    {
+      "name": "Hide Armor",
+      "bonus": 0.18,
+      "type": "armor"
+    },
+    {
+      "name": "Chain Shirt",
+      "bonus": 0.19,
+      "type": "armor"
+    },
+    {
+      "name": "Scale Mail",
+      "bonus": 0.2,
+      "type": "armor"
+    },
+    {
+      "name": "Breastplate",
+      "bonus": 0.22,
+      "type": "armor"
+    },
+    {
+      "name": "Spiked Flail",
+      "bonus": 0.21,
+      "type": "weapon"
+    },
+    {
+      "name": "Ice Lance",
+      "bonus": 0.21,
+      "type": "spell"
+    },
+    {
+      "name": "War Axe",
+      "bonus": 0.22,
+      "type": "weapon"
+    },
+    {
+      "name": "Stormcaller’s Wand",
+      "bonus": 0.23,
+      "type": "spell"
+    },
+    {
+      "name": "Leather Jerkin",
+      "bonus": 0.19,
+      "type": "armor"
+    },
+    {
+      "name": "Barbed Shield",
+      "bonus": 0.21,
+      "type": "armor"
+    }
+  ]
+}

@@ -149,8 +149,8 @@ nlohmann::json Hero::toJson() const {
 
   json heroJson = Creature::toJson();
 
-  heroJson["race"] = static_cast<unsigned>(characterRace);
-  heroJson["class"] = static_cast<unsigned>(characterClass);
+  heroJson["race"] = characterRace;
+  heroJson["class"] = characterClass;
 
   std::vector<json> itemsJson;
 

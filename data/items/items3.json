@@ -1,0 +1,79 @@
+{
+  "items": [
+    {
+      "name": "Mythril Greatsword",
+      "bonus": 0.31,
+      "type": "weapon"
+    },
+    {
+      "name": "Lightning Storm",
+      "bonus": 0.32,
+      "type": "spell"
+    },
+    {
+      "name": "Dragon Bone Mace",
+      "bonus": 0.3,
+      "type": "weapon"
+    },
+    {
+      "name": "Mythril Dual Swords",
+      "bonus": 0.33,
+      "type": "weapon"
+    },
+    {
+      "name": "Fire Inferno",
+      "bonus": 0.34,
+      "type": "spell"
+    },
+    {
+      "name": "Ring Mail",
+      "bonus": 0.26,
+      "type": "armor"
+    },
+    {
+      "name": "Chain Mail",
+      "bonus": 0.27,
+      "type": "armor"
+    },
+    {
+      "name": "Splint",
+      "bonus": 0.28,
+      "type": "armor"
+    },
+    {
+      "name": "Plate",
+      "bonus": 0.29,
+      "type": "armor"
+    },
+    {
+      "name": "Shadowfang Dagger",
+      "bonus": 0.30,
+      "type": "weapon"
+    },
+    {
+      "name": "Frostbite Orb",
+      "bonus": 0.31,
+      "type": "spell"
+    },
+    {
+      "name": "Thunderstrike Hammer",
+      "bonus": 0.34,
+      "type": "weapon"
+    },
+    {
+      "name": "Arcane Scepter",
+      "bonus": 0.33,
+      "type": "spell"
+    },
+    {
+      "name": "Mystic Cloak",
+      "bonus": 0.27,
+      "type": "armor"
+    },
+    {
+      "name": "Dragonhide Vest",
+      "bonus": 0.29,
+      "type": "armor"
+    }
+  ]
+}

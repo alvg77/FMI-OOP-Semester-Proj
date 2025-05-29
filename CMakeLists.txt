@@ -47,7 +47,8 @@ add_executable(FMI_OOP_Semester_Proj
         src/Game/Save/SaveManager.cpp
         src/Game/Save/SaveManager.hpp
         src/Game/GameContext.hpp
-        src/GameAction.hpp
 )
+
+
 
 target_link_libraries(FMI_OOP_Semester_Proj PRIVATE nlohmann_json::nlohmann_json)

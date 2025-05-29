@@ -1,0 +1,69 @@
+{
+  "items": [
+    {
+      "name": "Enchanted Mythril Longsword",
+      "bonus": 0.39,
+      "type": "weapon"
+    },
+    {
+      "name": "Divine Lightning",
+      "bonus": 0.41,
+      "type": "spell"
+    },
+    {
+      "name": "Ancient Dragon Bone Mace",
+      "bonus": 0.4,
+      "type": "weapon"
+    },
+    {
+      "name": "Mythril Plate Armor",
+      "bonus": 0.38,
+      "type": "armor"
+    },
+    {
+      "name": "Dragon Scale Mail",
+      "bonus": 0.4,
+      "type": "armor"
+    },
+    {
+      "name": "Celestial Guardian Armor",
+      "bonus": 0.4,
+      "type": "armor"
+    },
+    {
+      "name": "Shadow Weave Robes",
+      "bonus": 0.36,
+      "type": "armor"
+    },
+    {
+      "name": "Phoenix Feather Cloak",
+      "bonus": 0.38,
+      "type": "armor"
+    },
+    {
+      "name": "Void Reaper Scythe",
+      "bonus": 0.45,
+      "type": "weapon"
+    },
+    {
+      "name": "Arcane Tempest",
+      "bonus": 0.4,
+      "type": "spell"
+    },
+    {
+      "name": "Celestial Lance",
+      "bonus": 0.41,
+      "type": "weapon"
+    },
+    {
+      "name": "Stormcaller’s Fury",
+      "bonus": 0.42,
+      "type": "spell"
+    },
+    {
+      "name": "Eclipse Blade",
+      "bonus": 0.47,
+      "type": "weapon"
+    }
+  ]
+}

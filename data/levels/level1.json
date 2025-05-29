@@ -1,7 +1,6 @@
 {
   "columns": 10,
   "rows": 10,
-  "treasureN": 2,
   "grid": [
     [
       1,
@@ -124,32 +123,6 @@
       1
     ]
   ],
-  "treasure_pool": [
-    {
-      "name": "Steel Greatsword",
-      "bonus": 0.14,
-      "type": "weapon"
-    },
-    {
-      "name": "Lightning Bolt",
-      "bonus": 0.16,
-      "type": "spell"
-    },
-    {
-      "name": "Elven Bow",
-      "bonus": 0.12,
-      "type": "weapon"
-    },
-    {
-      "name": "Steel Warhammer",
-      "bonus": 0.16,
-      "type": "weapon"
-    },
-    {
-      "name": "Ice Spike",
-      "bonus": 0.13,
-      "type": "spell"
-    }
-  ],
+  "treasureN": 2,
   "monsterN": 2
 }

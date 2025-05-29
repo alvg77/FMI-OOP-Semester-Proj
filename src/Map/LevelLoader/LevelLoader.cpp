@@ -14,6 +14,7 @@ std::mt19937 LevelLoader::rng = std::mt19937(std::random_device{}());
 const std::string LevelLoader::levelFileLocation = "../data/levels/";
 const std::string LevelLoader::monstersFileLocation =
     "../data/monsters/monsters.json";
+const std::string LevelLoader::itemsFileLocation = "../data/items/";
 
 LoadedLevel LevelLoader::load(const unsigned n) {
   const std::string levelPath =
@@ -32,10 +33,6 @@ LoadedLevel LevelLoader::load(const unsigned n) {
 
   parseGrid(data["grid"], level.grid, freeSpaces, level.cols);
 
-  if (!data.contains("treasure_pool") || !data["treasure_pool"].is_array()) {
-    throw std::invalid_argument("Invalid or missing treasure_pool.");
-  }
-
   level.playerRow = freeSpaces.begin()->first;
   level.playerCol = freeSpaces.begin()->second;
   freeSpaces.erase(freeSpaces.begin());
@@ -44,7 +41,7 @@ LoadedLevel LevelLoader::load(const unsigned n) {
   level.finishCol = (freeSpaces.end() - 1)->second;
   freeSpaces.erase(freeSpaces.end() - 1);
 
-  std::vector<NPEntity*> items = loadItems(data["treasure_pool"], treasureN);
+  std::vector<NPEntity*> items = loadItems(treasureN, n);
   placeEntitiesAtRandomAndClear(items, freeSpaces, level.grid);
 
   std::vector<NPEntity*> monsters = loadMonsters(monsterN, n);
@@ -55,7 +52,7 @@ LoadedLevel LevelLoader::load(const unsigned n) {
 
 void LevelLoader::validateLevelJson(const json& data) {
   const std::vector<std::string> requiredFields = {
-      "columns", "rows", "treasure_pool", "grid", "monsterN", "treasureN"};
+      "columns", "rows", "grid", "monsterN", "treasureN"};
 
   for (const std::string& field : requiredFields) {
     if (!data.contains(field)) {
@@ -117,18 +114,25 @@ void LevelLoader::parseGrid(
   }
 }
 
-std::vector<NPEntity*> LevelLoader::loadItems(const json& treasurePool,
+std::vector<NPEntity*> LevelLoader::loadItems(const unsigned count,
                                               const unsigned n) {
-  if (treasurePool.size() < n) {
-    throw std::invalid_argument(
+  json data =
+      readJson(itemsFileLocation + "items" + std::to_string(n) + ".json");
+
+  if (!data.contains("items")) {
+    throw std::runtime_error("Invalid item file.");
+  }
+
+  if (data["items"].size() < count) {
+    throw std::runtime_error(
         "Not enough treasures in the pool to choose from.");
   }
 
-  std::vector<json> pool = treasurePool.get<std::vector<json>>();
+  std::vector<json> pool = data["items"].get<std::vector<json>>();
   std::shuffle(pool.begin(), pool.end(), std::mt19937{std::random_device{}()});
 
   std::vector<NPEntity*> items;
-  for (unsigned i = 0; i < n; ++i) {
+  for (unsigned i = 0; i < count; ++i) {
     const json& itemJson = pool[i];
     std::string name = itemJson["name"].get<std::string>();
     const double bonus = itemJson["bonus"].get<double>();
