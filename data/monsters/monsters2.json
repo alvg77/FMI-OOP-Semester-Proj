@@ -1,0 +1,68 @@
+{
+  "monsters": [
+    {
+      "name": "Crimson Ravager",
+      "stats": {
+        "strength": 20,
+        "mana": 12,
+        "maxHealth": 63
+      }
+    },
+    {
+      "name": "Bone Sniper",
+      "stats": {
+        "strength": 15,
+        "mana": 16,
+        "maxHealth": 58
+      }
+    },
+    {
+      "name": "Ironclad Brute",
+      "stats": {
+        "strength": 27,
+        "mana": 7,
+        "maxHealth": 82
+      }
+    },
+    {
+      "name": "Void Sorcerer",
+      "stats": {
+        "strength": 8,
+        "mana": 22,
+        "maxHealth": 68
+      }
+    },
+    {
+      "name": "Swamp Fiend",
+      "stats": {
+        "strength": 23,
+        "mana": 11,
+        "maxHealth": 77
+      }
+    },
+    {
+      "name": "Glacial Wisp",
+      "stats": {
+        "strength": 6,
+        "mana": 27,
+        "maxHealth": 57
+      }
+    },
+    {
+      "name": "Granite Colossus",
+      "stats": {
+        "strength": 30,
+        "mana": 2,
+        "maxHealth": 81
+      }
+    },
+    {
+      "name": "Haunted Reaper",
+      "stats": {
+        "strength": 17,
+        "mana": 17,
+        "maxHealth": 65
+      }
+    }
+  ]
+}

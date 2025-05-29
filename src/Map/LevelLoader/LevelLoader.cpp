@@ -11,14 +11,14 @@
 #include "LoadedLevel.hpp"
 
 std::mt19937 LevelLoader::rng = std::mt19937(std::random_device{}());
-const std::string LevelLoader::levelFileLocation = "../data/levels/";
+const std::string LevelLoader::levelFileLocation = "../data/levels/level";
 const std::string LevelLoader::monstersFileLocation =
-    "../data/monsters/monsters.json";
-const std::string LevelLoader::itemsFileLocation = "../data/items/";
+    "../data/monsters/monsters";
+const std::string LevelLoader::itemsFileLocation = "../data/items/items";
 
 LoadedLevel LevelLoader::load(const unsigned n) {
   const std::string levelPath =
-      LevelLoader::levelFileLocation + "level" + std::to_string(n) + ".json";
+      LevelLoader::levelFileLocation + std::to_string(n) + ".json";
 
   json data = readJson(levelPath);
   validateLevelJson(data);
@@ -28,18 +28,24 @@ LoadedLevel LevelLoader::load(const unsigned n) {
   const unsigned treasureN = data["treasureN"].get<unsigned>();
   level.rows = data["rows"].get<unsigned>();
   level.cols = data["columns"].get<unsigned>();
+  level.finishRow = data["finishRow"];
+  level.finishCol = data["finishCol"];
 
   std::vector<std::pair<unsigned, unsigned>> freeSpaces;
 
   parseGrid(data["grid"], level.grid, freeSpaces, level.cols);
 
+  const auto it = std::find(freeSpaces.begin(), freeSpaces.end(),
+                      std::pair<unsigned, unsigned>(level.finishRow, level.finishCol));
+  if (it != freeSpaces.end()) {
+    freeSpaces.erase(it);
+  } else {
+    throw std::runtime_error("Finish cell should be free!");
+  }
+
   level.playerRow = freeSpaces.begin()->first;
   level.playerCol = freeSpaces.begin()->second;
   freeSpaces.erase(freeSpaces.begin());
-
-  level.finishRow = (freeSpaces.end() - 1)->first;
-  level.finishCol = (freeSpaces.end() - 1)->second;
-  freeSpaces.erase(freeSpaces.end() - 1);
 
   std::vector<NPEntity*> items = loadItems(treasureN, n);
   placeEntitiesAtRandomAndClear(items, freeSpaces, level.grid);
@@ -51,8 +57,8 @@ LoadedLevel LevelLoader::load(const unsigned n) {
 }
 
 void LevelLoader::validateLevelJson(const json& data) {
-  const std::vector<std::string> requiredFields = {
-      "columns", "rows", "grid", "monsterN", "treasureN"};
+  const std::vector<std::string> requiredFields = {"columns", "rows", "grid",
+                                                   "monsterN", "treasureN"};
 
   for (const std::string& field : requiredFields) {
     if (!data.contains(field)) {
@@ -102,10 +108,9 @@ void LevelLoader::parseGrid(
           grid[row][col] = new Cell();
           freeSpaces.emplace_back(row, col);
           break;
-        case 1: {
+        case 1:
           grid[row][col] = new Cell(new Wall());
           break;
-        }
         default:
           throw std::invalid_argument("Unknown cell type in grid: " +
                                       std::to_string(val));
@@ -116,8 +121,7 @@ void LevelLoader::parseGrid(
 
 std::vector<NPEntity*> LevelLoader::loadItems(const unsigned count,
                                               const unsigned n) {
-  json data =
-      readJson(itemsFileLocation + "items" + std::to_string(n) + ".json");
+  json data = readJson(itemsFileLocation + std::to_string(n) + ".json");
 
   if (!data.contains("items")) {
     throw std::runtime_error("Invalid item file.");
@@ -147,7 +151,8 @@ std::vector<NPEntity*> LevelLoader::loadItems(const unsigned count,
 
 std::vector<NPEntity*> LevelLoader::loadMonsters(const unsigned count,
                                                  const unsigned n) {
-  json data = readJson(LevelLoader::monstersFileLocation);
+  json data =
+      readJson(LevelLoader::monstersFileLocation + std::to_string(n) + ".json");
 
   if (!data.contains("monsters") || !data["monsters"].is_array()) {
     throw std::invalid_argument("Invalid monsters JSON format.");

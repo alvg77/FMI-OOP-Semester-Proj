@@ -22,7 +22,7 @@ class Monster final : public Creature, public NPEntity {
   nlohmann::json toJson() const override;
 
  private:
-  double scalesDefenceMult{};
+  double scalesDefenceMult;
   static constexpr char monsterSymbol = 'M';
 
   void loadJson(const nlohmann::json& monsterJson) override;

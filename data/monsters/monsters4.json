@@ -1,0 +1,100 @@
+{
+  "monsters": [
+    {
+      "name": "Blazefang Ravager",
+      "stats": {
+        "strength": 28,
+        "mana": 12,
+        "maxHealth": 110
+      }
+    },
+    {
+      "name": "Nightshade Sharpshot",
+      "stats": {
+        "strength": 24,
+        "mana": 16,
+        "maxHealth": 105
+      }
+    },
+    {
+      "name": "Ironmaw Colossus",
+      "stats": {
+        "strength": 30,
+        "mana": 9,
+        "maxHealth": 125
+      }
+    },
+    {
+      "name": "Dreadveil Warlock",
+      "stats": {
+        "strength": 6,
+        "mana": 34,
+        "maxHealth": 100
+      }
+    },
+    {
+      "name": "Murkwallow Beast",
+      "stats": {
+        "strength": 27,
+        "mana": 13,
+        "maxHealth": 115
+      }
+    },
+    {
+      "name": "Shiverghost Wraith",
+      "stats": {
+        "strength": 12,
+        "mana": 28,
+        "maxHealth": 95
+      }
+    },
+    {
+      "name": "Stonegrasp Titan",
+      "stats": {
+        "strength": 29,
+        "mana": 11,
+        "maxHealth": 130
+      }
+    },
+    {
+      "name": "Phantom Reaper",
+      "stats": {
+        "strength": 20,
+        "mana": 20,
+        "maxHealth": 108
+      }
+    },
+    {
+      "name": "Cinderclaw Dragon",
+      "stats": {
+        "strength": 25,
+        "mana": 15,
+        "maxHealth": 130
+      }
+    },
+    {
+      "name": "Frostspire Dragon",
+      "stats": {
+        "strength": 21,
+        "mana": 19,
+        "maxHealth": 127
+      }
+    },
+    {
+      "name": "Vorthrax, Flame Sovereign",
+      "stats": {
+        "strength": 26,
+        "mana": 14,
+        "maxHealth": 130
+      }
+    },
+    {
+      "name": "Sylithra, Ice Enchantress",
+      "stats": {
+        "strength": 17,
+        "mana": 23,
+        "maxHealth": 120
+      }
+    }
+  ]
+}

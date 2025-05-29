@@ -1,0 +1,84 @@
+{
+  "monsters": [
+    {
+      "name": "Flame Ravager",
+      "stats": {
+        "strength": 20,
+        "mana": 18,
+        "maxHealth": 92
+      }
+    },
+    {
+      "name": "Shadow Marksman",
+      "stats": {
+        "strength": 22,
+        "mana": 20,
+        "maxHealth": 87
+      }
+    },
+    {
+      "name": "Steel Juggernaut",
+      "stats": {
+        "strength": 30,
+        "mana": 8,
+        "maxHealth": 110
+      }
+    },
+    {
+      "name": "Abyssal Warlock",
+      "stats": {
+        "strength": 13,
+        "mana": 25,
+        "maxHealth": 95
+      }
+    },
+    {
+      "name": "Marsh Horror",
+      "stats": {
+        "strength": 19,
+        "mana": 15,
+        "maxHealth": 107
+      }
+    },
+    {
+      "name": "Frost Wraith",
+      "stats": {
+        "strength": 18,
+        "mana": 20,
+        "maxHealth": 85
+      }
+    },
+    {
+      "name": "Mountain Titan",
+      "stats": {
+        "strength": 33,
+        "mana": 5,
+        "maxHealth": 110
+      }
+    },
+    {
+      "name": "Spectral Harvester",
+      "stats": {
+        "strength": 4,
+        "mana": 33,
+        "maxHealth": 90
+      }
+    },
+    {
+      "name": "Emberwing Dragon",
+      "stats": {
+        "strength": 19,
+        "mana": 16,
+        "maxHealth": 130
+      }
+    },
+    {
+      "name": "Glacierfang Dragon",
+      "stats": {
+        "strength": 20,
+        "mana": 15,
+        "maxHealth": 125
+      }
+    }
+  ]
+}

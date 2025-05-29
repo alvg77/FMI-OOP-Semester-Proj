@@ -12,7 +12,6 @@ Monster::Monster(const std::string& name, const unsigned level,
     : Creature(name, level, initialStats), scalesDefenceMult(0.15) {
   for (unsigned i = 1; i < level; ++i) {
     scalesDefenceMult += 0.05;
-    Creature::increaseStats({10, 10, 20});
   }
 }
 
