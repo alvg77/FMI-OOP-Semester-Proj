@@ -15,4 +15,4 @@ void Wall::onInteract(Hero& hero) {}
 
 char Wall::getSymbol() const { return Wall::wallSymbol; }
 
-NPEntity* Wall::clone() const { return new Wall(*this); }
+Wall* Wall::clone() const { return new Wall(*this); }

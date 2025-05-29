@@ -45,7 +45,7 @@ void Monster::onInteract(Hero& hero) {
 
 char Monster::getSymbol() const { return monsterSymbol; }
 
-NPEntity* Monster::clone() const { return new Monster(*this); }
+Monster* Monster::clone() const { return new Monster(*this); }
 
 nlohmann::json Monster::toJson() const {
   using nlohmann::json;

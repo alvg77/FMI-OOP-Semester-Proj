@@ -30,7 +30,7 @@ void Item::onInteract(Hero& hero) {
 
 char Item::getSymbol() const { return Item::treasureSymbol; }
 
-NPEntity* Item::clone() const { return new Item(*this); }
+Item* Item::clone() const { return new Item(*this); }
 
 std::ostream& operator<<(std::ostream& os, const Item& item) {
   std::string itemType;

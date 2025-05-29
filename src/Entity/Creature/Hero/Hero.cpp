@@ -32,13 +32,13 @@ Hero::Hero(const Hero& other)
       weapon(nullptr),
       spell(nullptr) {
   if (other.armor != nullptr) {
-    armor = dynamic_cast<Item*>(other.armor->clone());
+    armor = other.armor->clone();
   }
   if (other.weapon != nullptr) {
-    weapon = dynamic_cast<Item*>(other.weapon->clone());
+    weapon = other.weapon->clone();
   }
   if (other.spell != nullptr) {
-    spell = dynamic_cast<Item*>(other.spell->clone());
+    spell = other.spell->clone();
   }
 }
 
@@ -111,15 +111,15 @@ void Hero::equipItem(const Item* item) {
   switch (item->getItemType()) {
     case ItemType::ARMOR:
       delete armor;
-      armor = dynamic_cast<Item*>(item->clone());
+      armor = item->clone();
       break;
     case ItemType::WEAPON:
       delete weapon;
-      weapon = dynamic_cast<Item*>(item->clone());
+      weapon = item->clone();
       break;
     case ItemType::SPELL:
       delete spell;
-      spell = dynamic_cast<Item*>(item->clone());
+      spell = item->clone();
       break;
   }
 }

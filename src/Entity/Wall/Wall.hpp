@@ -8,7 +8,7 @@ class Wall final : public NPEntity {
   bool onStep(Hero& hero) override;
   void onInteract(Hero& hero) override;
   char getSymbol() const override;
-  NPEntity* clone() const override;
+  Wall* clone() const override;
  private:
   static constexpr char wallSymbol = '#';
 };

@@ -19,7 +19,7 @@ class Item final : public NPEntity {
   bool onStep(Hero& hero) override;
   void onInteract(Hero& hero) override;
   char getSymbol() const override;
-  NPEntity* clone() const override;
+  Item* clone() const override;
 
   nlohmann::json toJson() const override;
 
