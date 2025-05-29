@@ -2,27 +2,32 @@
 #define MAP_HPP
 
 #include <iostream>
+#include <nlohmann/json_fwd.hpp>
+#include <random>
 #include <vector>
 
+enum class GameAction;
+struct LoadedLevel;
 class Cell;
 class Item;
 class NPEntity;
 class Hero;
 
-enum class MoveDirection { UP, DOWN, LEFT, RIGHT };
-
 class Map {
  public:
   explicit Map(unsigned n);
+  explicit Map(const nlohmann::json& mapJson);
   Map(const Map& other) = delete;
   Map& operator=(const Map& other) = delete;
   ~Map();
 
-  bool moveHero(Hero& hero, MoveDirection direction);
+  bool moveHero(Hero& hero, GameAction direction);
 
   bool hasReachedEnd() const;
 
   void display(std::ostream& os = std::cout) const;
+
+  nlohmann::json toJson() const;
 
  private:
   unsigned rows, cols;
@@ -31,15 +36,14 @@ class Map {
   unsigned finishRow, finishCol;
   unsigned playerRow, playerCol;
 
+  std::mt19937 rng = std::mt19937(std::random_device{}());
+
   void loadLevel(unsigned n);
+  void loadJson(const nlohmann::json& mapJson);
   void placeEntityAtRandom(
-      NPEntity* entity,
-      std::vector<std::pair<unsigned, unsigned>>& freeCells);
+      NPEntity* entity, std::vector<std::pair<unsigned, unsigned>>& freeCells);
 
   bool isWithinBounds(unsigned row, unsigned col) const;
-
-  static const std::string levelFileLocation;
-  static const std::string monstersFileLocation;
 };
 
 #endif  // MAP_HPP

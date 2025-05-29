@@ -4,6 +4,8 @@
 #include <nlohmann/json.hpp>
 #include <vector>
 
+struct LoadedLevel;
+
 class Cell;
 class Item;
 class Monster;
@@ -13,29 +15,20 @@ using nlohmann::json;
 
 class LevelLoader {
  public:
-  struct LoadedLevel {
-    unsigned rows;
-    unsigned cols;
-    unsigned monsterN;
-    unsigned treasureN;
-    std::vector<std::vector<Cell*>> grid;
-    std::vector<std::pair<unsigned, unsigned>> freeSpaces;
-    std::vector<Item*> items;
-    std::vector<Monster*> monsters;
-  };
-
-  static LoadedLevel load(const std::string& path,
-                          const std::string& monstersPath);
+  static LoadedLevel load(unsigned n);
 
  private:
   static void validateLevelJson(const json& data);
   static json readJson(const std::string& path);
-  static void parseGrid(const json& json, std::vector<std::vector<Cell*>>& grid,
+  static void parseGrid(const json& jsonGrid,
+                        std::vector<std::vector<Cell*>>& grid,
                         std::vector<std::pair<unsigned, unsigned>>& freeSpaces,
                         unsigned cols);
   static std::vector<Item*> loadItems(const json& treasurePool, unsigned n);
-  static std::vector<Monster*> loadMonsters(const std::string& path,
-                                            unsigned count);
+  static std::vector<Monster*> loadMonsters(unsigned count, unsigned n);
+
+  static const std::string levelFileLocation;
+  static const std::string monstersFileLocation;
 };
 
 #endif  // LEVELLOADER_HPP

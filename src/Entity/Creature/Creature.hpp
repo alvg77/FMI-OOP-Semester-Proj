@@ -1,21 +1,22 @@
 #ifndef CREATURE_HPP
 #define CREATURE_HPP
 
+#include <nlohmann/adl_serializer.hpp>
 #include <string>
 
 #include "Stats.hpp"
 
 class Creature {
  public:
-  Creature(const std::string& name, unsigned level, const Stats& stats,
-           unsigned levelUpPoints);
+  Creature(const std::string& name, unsigned level, const Stats& stats);
+  explicit Creature(const nlohmann::json& creatureJson);
   virtual ~Creature() = default;
 
   virtual void takeDamage(double damage) = 0;
 
-  bool levelUp(unsigned hp, unsigned str, unsigned mn);
-
   bool isAlive() const;
+
+  virtual nlohmann::json toJson() const;
 
   std::string getName() const;
   double getCurrentHealth() const;
@@ -23,9 +24,11 @@ class Creature {
   unsigned getMana() const;
   unsigned getMaxHealth() const;
 
-protected:
+ protected:
   void reduceCurrentHealth(double amount);
   void increaseCurrentHealth(double amount);
+
+  void increaseStats(const Stats& stats);
 
   void swap(Creature& other) noexcept;
 
@@ -34,7 +37,8 @@ protected:
   unsigned level;
   Stats stats;
   double currentHealth;
-  unsigned levelUpPoints;
+
+  virtual void loadJson(const nlohmann::json& creatureJson);
 };
 
 #endif  // CREATURE_HPP

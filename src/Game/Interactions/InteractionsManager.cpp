@@ -16,14 +16,18 @@ void InteractionsManager::promptHeroItemEquip(Hero& hero, const Item* item) {
 
   std::cout << "Your current loadout:" << std::endl;
   hero.displayLoadout();
-
   std::cout << "Do you want to equip the item [y/n]:";
-  std::cin >> choice;
-  std::cin.ignore(1000, '\n');
 
-  if (choice == 'y') {
-    hero.equipItem(item);
-  }
+  do {
+    std::cin >> choice;
+    std::cin.ignore(1000, '\n');
+
+    if (choice == 'y') {
+      hero.equipItem(item);
+    } else if (choice != 'n') {
+      std::cout << "Invalid choice!" << std::endl;
+    }
+  } while (choice != 'y' && choice != 'n');
 }
 
 void InteractionsManager::promptHeroLevelUp(Hero& hero) {
@@ -47,7 +51,7 @@ void InteractionsManager::promptHeroLevelUp(Hero& hero) {
     std::cout << "Enter points going to max health: ";
     std::cin >> hp;
     std::cin.ignore(1000, '\n');
-  } while (!hero.levelUp(hp, str, mn));
+  } while (!hero.levelUp({str, mn, hp}));
 }
 
 void InteractionsManager::promptContinue() {

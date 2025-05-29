@@ -1,6 +1,5 @@
 #include "LevelLoader.hpp"
 
-#include <iostream>
 #include <fstream>
 #include <random>
 
@@ -9,10 +8,17 @@
 #include "../../Entity/Item/Item.hpp"
 #include "../../Entity/Wall/Wall.hpp"
 #include "../Cell/Cell.hpp"
+#include "LoadedLevel.hpp"
 
-LevelLoader::LoadedLevel LevelLoader::load(const std::string& path,
-                                           const std::string& monstersPath) {
-  json data = readJson(path);
+const std::string LevelLoader::levelFileLocation = "../data/levels/";
+const std::string LevelLoader::monstersFileLocation =
+    "../data/monsters/monsters.json";
+
+LoadedLevel LevelLoader::load(unsigned n) {
+  const std::string levelPath =
+      LevelLoader::levelFileLocation + "level" + std::to_string(n) + ".json";
+
+  json data = readJson(levelPath);
   validateLevelJson(data);
 
   LoadedLevel level;
@@ -28,15 +34,15 @@ LevelLoader::LoadedLevel LevelLoader::load(const std::string& path,
   }
   level.items = loadItems(data["treasure_pool"], level.treasureN);
 
-  level.monsters = loadMonsters(monstersPath, level.monsterN);
+  level.monsters =
+      loadMonsters(level.monsterN, n);
 
   return level;
 }
 
 void LevelLoader::validateLevelJson(const json& data) {
   const std::vector<std::string> requiredFields = {
-      "columns",  "rows",     "treasure_pool", "grid",
-      "monsterN", "treasureN"};
+      "columns", "rows", "treasure_pool", "grid", "monsterN", "treasureN"};
 
   for (const std::string& field : requiredFields) {
     if (!data.contains(field)) {
@@ -80,7 +86,7 @@ void LevelLoader::parseGrid(
     grid[row].resize(cols);
 
     for (unsigned col = 0; col < cols; ++col) {
-      unsigned val = rowJson[col].get<unsigned>();
+      const unsigned val = rowJson[col].get<unsigned>();
       switch (val) {
         case 0:
           grid[row][col] = new Cell();
@@ -124,9 +130,9 @@ std::vector<Item*> LevelLoader::loadItems(const json& treasurePool,
   return items;
 }
 
-std::vector<Monster*> LevelLoader::loadMonsters(const std::string& path,
-                                                const unsigned count) {
-  json data = readJson(path);
+std::vector<Monster*> LevelLoader::loadMonsters(const unsigned count,
+                                                const unsigned n) {
+  json data = readJson(LevelLoader::monstersFileLocation);
 
   if (!data.contains("monsters") || !data["monsters"].is_array()) {
     throw std::invalid_argument("Invalid monsters JSON format.");
@@ -145,7 +151,7 @@ std::vector<Monster*> LevelLoader::loadMonsters(const std::string& path,
     const json& monsterJson = monsterList[i];
 
     std::string name = monsterJson["name"].get<std::string>();
-    unsigned level = monsterJson["level"].get<unsigned>();
+    const unsigned level = n;
 
     Stats stats{};
     stats.strength = monsterJson["stats"]["strength"].get<unsigned>();

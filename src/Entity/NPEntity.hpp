@@ -1,6 +1,8 @@
 #ifndef NPENTITY_HPP
 #define NPENTITY_HPP
 
+#include <nlohmann/json_fwd.hpp>
+
 class Hero;
 
 enum class NPEntityStatus { ACTIVE, INACTIVE };
@@ -13,6 +15,7 @@ class NPEntity {
   virtual char getSymbol() const = 0;
   NPEntityStatus getStatus() const;
   virtual NPEntity* clone() const = 0;
+  virtual nlohmann::json toJson() const;
 
  protected:
   NPEntityStatus status = NPEntityStatus::ACTIVE;

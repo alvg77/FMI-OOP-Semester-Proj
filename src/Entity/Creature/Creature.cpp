@@ -1,33 +1,23 @@
 #include "Creature.hpp"
 
+#include <nlohmann/json.hpp>
+
 Creature::Creature(const std::string& name, const unsigned level,
-                   const Stats& stats, const unsigned levelUpPoints)
-    : name(name),
-      level(level),
-      stats(stats),
-      currentHealth(stats.maxHealth),
-      levelUpPoints(levelUpPoints) {}
+                   const Stats& stats)
+    : name(name), level(level), stats(stats), currentHealth(stats.maxHealth) {}
 
-bool Creature::levelUp(const unsigned hp, const unsigned str,
-                       const unsigned mn) {
-  if (hp + str + mn != levelUpPoints) {
-    return false;
-  }
-
-  ++level;
-  stats.maxHealth += hp;
-  currentHealth = stats.maxHealth;
-  stats.strength += str;
-  stats.mana += mn;
-
-  return true;
+Creature::Creature(const nlohmann::json& creatureJson)
+    : level(1), stats({}), currentHealth(0) {
+  Creature::loadJson(creatureJson);
 }
 
 bool Creature::isAlive() const { return currentHealth > 0; }
 
 std::string Creature::getName() const { return name; }
 
-double Creature::getCurrentHealth() const { return currentHealth > 0 ? currentHealth : 0; }
+double Creature::getCurrentHealth() const {
+  return currentHealth > 0 ? currentHealth : 0;
+}
 
 unsigned Creature::getStrength() const { return stats.strength; }
 
@@ -35,9 +25,32 @@ unsigned Creature::getMana() const { return stats.mana; }
 
 unsigned Creature::getMaxHealth() const { return stats.maxHealth; }
 
-void Creature::reduceCurrentHealth(const double amount) { currentHealth -= amount; }
+nlohmann::json Creature::toJson() const {
+  using nlohmann::json;
 
-void Creature::increaseCurrentHealth(const double amount) { currentHealth += amount; }
+  json creatureJson;
+
+  creatureJson["name"] = name;
+  creatureJson["level"] = level;
+  creatureJson["strength"] = stats.strength;
+  creatureJson["mana"] = stats.mana;
+  creatureJson["maxhealth"] = stats.maxHealth;
+  creatureJson["currenthealth"] = currentHealth;
+
+  return creatureJson;
+}
+
+void Creature::reduceCurrentHealth(const double amount) {
+  currentHealth -= amount;
+}
+
+void Creature::increaseCurrentHealth(const double amount) {
+  currentHealth += amount;
+}
+
+void Creature::increaseStats(const Stats& stats) {
+  this->stats = this->stats + stats;
+}
 
 void Creature::swap(Creature& other) noexcept {
   using std::swap;
@@ -46,5 +59,13 @@ void Creature::swap(Creature& other) noexcept {
   swap(level, other.level);
   swap(stats, other.stats);
   swap(currentHealth, other.currentHealth);
-  swap(levelUpPoints, other.levelUpPoints);
+}
+
+void Creature::loadJson(const nlohmann::json& creatureJson) {
+  name = creatureJson["name"];
+  level = creatureJson["level"];
+  stats.strength = creatureJson["strength"];
+  stats.mana = creatureJson["mana"];
+  stats.maxHealth = creatureJson["maxhealth"];
+  currentHealth = creatureJson["currenthealth"];
 }

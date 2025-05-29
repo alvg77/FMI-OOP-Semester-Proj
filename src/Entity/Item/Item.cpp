@@ -1,12 +1,14 @@
 #include "Item.hpp"
 
 #include <iostream>
+#include <nlohmann/json.hpp>
 
 #include "../../Game/Interactions/InteractionsManager.hpp"
 
 Item::Item(const std::string& name, const double bonus, const ItemType itemType)
     : name(name), bonus(bonus), itemType(itemType) {}
 
+Item::Item(const nlohmann::json& itemJson) { loadJson(itemJson); }
 
 std::string Item::getName() const { return name; }
 
@@ -28,10 +30,7 @@ void Item::onInteract(Hero& hero) {
 
 char Item::getSymbol() const { return Item::treasureSymbol; }
 
-
-NPEntity* Item::clone() const {
-  return new Item(*this);
-}
+NPEntity* Item::clone() const { return new Item(*this); }
 
 std::ostream& operator<<(std::ostream& os, const Item& item) {
   std::string itemType;
@@ -49,4 +48,22 @@ std::ostream& operator<<(std::ostream& os, const Item& item) {
 
   os << "<" << item.name << ", Mult: " << item.bonus << ", " << itemType << ">";
   return os;
+}
+
+nlohmann::json Item::toJson() const {
+  using nlohmann::json;
+
+  json itemJson;
+
+  itemJson["name"] = name;
+  itemJson["bonus"] = bonus;
+  itemJson["itemtype"] = static_cast<unsigned>(itemType);
+
+  return itemJson;
+}
+
+void Item::loadJson(const nlohmann::json& itemJson) {
+  name = itemJson["name"].get<std::string>();
+  bonus = itemJson["bonus"].get<double>();
+  itemType = static_cast<ItemType>(itemJson["itemtype"].get<unsigned>());
 }

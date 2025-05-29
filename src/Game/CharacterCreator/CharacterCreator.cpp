@@ -42,9 +42,9 @@ Hero* CharacterCreator::createHero() {
 Stats CharacterCreator::getInitialStats(const HeroClass hClass) {
   switch (hClass) {
     case HeroClass::WARRIOR:
-      return {20, 10, 55};
+      return {20, 10, 40};
     case HeroClass::MAGE:
-      return {10, 20, 55};
+      return {10, 20, 40};
   }
 }
 

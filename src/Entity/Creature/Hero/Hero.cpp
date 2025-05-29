@@ -1,27 +1,27 @@
 #include "Hero.hpp"
 
+#include <nlohmann/json.hpp>
+
 #include "../../Item/Item.hpp"
 #include "../Monster/Monster.hpp"
 
 Hero::Hero(const std::string& name, const unsigned level, const Stats& stats,
            const HeroRace characterRace, const HeroClass characterClass,
            const Item* weapon, const Item* spell, const Item* armor)
-    : Creature(name, level, stats, 30),
+    : Creature(name, level, stats),
       characterRace(characterRace),
       characterClass(characterClass),
       armor(nullptr),
       weapon(nullptr),
       spell(nullptr) {
+  equipItem(weapon);
+  equipItem(spell);
+  equipItem(armor);
+}
 
-  if (armor != nullptr) {
-    this->armor = dynamic_cast<Item*>(armor->clone());
-  }
-  if (weapon != nullptr) {
-    this->weapon = dynamic_cast<Item*>(weapon->clone());
-  }
-  if (spell != nullptr) {
-    this->spell = dynamic_cast<Item*>(spell->clone());
-  }
+Hero::Hero(const nlohmann::json& heroJson)
+    : Creature(heroJson), armor(nullptr), weapon(nullptr), spell(nullptr) {
+  loadJson(heroJson);
 }
 
 Hero::Hero(const Hero& other)
@@ -57,6 +57,17 @@ Hero::~Hero() {
   delete spell;
 }
 
+bool Hero::levelUp(const Stats& stats) {
+  if (stats.mana + stats.strength + stats.maxHealth != lvlUpPoints) {
+    return false;
+  }
+
+  increaseStats(stats);
+  increaseCurrentHealth(getMaxHealth() - getCurrentHealth());
+
+  return true;
+}
+
 void Hero::dealDamage(Monster& monster, const AttackType attackType) const {
   switch (attackType) {
     case AttackType::WEAPON: {
@@ -87,7 +98,8 @@ void Hero::takeDamage(double damage) {
 
 void Hero::heal() {
   if (getCurrentHealth() < static_cast<double>(getMaxHealth()) / 2) {
-    Creature::increaseCurrentHealth(static_cast<double>(getMaxHealth()) / 2 - getCurrentHealth());
+    Creature::increaseCurrentHealth(static_cast<double>(getMaxHealth()) / 2 -
+                                    getCurrentHealth());
   }
 }
 
@@ -129,6 +141,46 @@ void Hero::displayLoadout(std::ostream& os) const {
     os << *spell << std::endl;
   } else {
     os << "No spell equipped." << std::endl;
+  }
+}
+
+nlohmann::json Hero::toJson() const {
+  using nlohmann::json;
+
+  json heroJson = Creature::toJson();
+
+  heroJson["race"] = static_cast<unsigned>(characterRace);
+  heroJson["class"] = static_cast<unsigned>(characterClass);
+
+  std::vector<json> itemsJson;
+
+  if (armor != nullptr) {
+    itemsJson.push_back(armor->toJson());
+  }
+
+  if (weapon != nullptr) {
+    itemsJson.push_back(weapon->toJson());
+  }
+
+  if (spell != nullptr) {
+    itemsJson.push_back(spell->toJson());
+  }
+
+  heroJson["items"] = itemsJson;
+
+  return heroJson;
+}
+
+void Hero::loadJson(const nlohmann::json& heroJson) {
+  using nlohmann::json;
+
+  characterRace = static_cast<HeroRace>(heroJson["race"].get<unsigned>());
+  characterClass = static_cast<HeroClass>(heroJson["class"].get<unsigned>());
+
+  for (const json& itemData : heroJson["items"]) {
+    const Item* item = new Item(itemData);
+    equipItem(item);
+    delete item;
   }
 }
 

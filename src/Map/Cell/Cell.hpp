@@ -1,17 +1,20 @@
 #ifndef CELL_HPP
 #define CELL_HPP
+#include <nlohmann/json_fwd.hpp>
 
 class NPEntity;
 class Hero;
 
 class Cell {
  public:
-  Cell(const NPEntity* entity = nullptr);
+  explicit Cell(const NPEntity* entity = nullptr);
   Cell(const Cell& other);
   Cell& operator=(const Cell& other);
   ~Cell();
 
-  void addEntity(NPEntity* entity);
+  void addEntity(const NPEntity* entity);
+  nlohmann::json getEntityJson() const;
+
   void removeEntity();
 
   bool step(Hero& hero);

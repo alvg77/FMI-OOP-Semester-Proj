@@ -3,6 +3,7 @@
 
 #include "../Entity/Creature/Hero/Hero.hpp"
 #include "../Map/Map.hpp"
+#include "GameContext.hpp"
 
 class Monster;
 class Item;
@@ -16,16 +17,12 @@ class GameManager {
 
   void runGameLoop();
 
-  void saveGame();
-  void loadGame();
-
  private:
   static constexpr unsigned nlevels = 5;
   static const std::string saveFileLocation;
 
   unsigned level;
-  Hero* hero;
-  Map* map;
+  GameContext ctx;
 };
 
 #endif  // GAMEMANAGER_HPP

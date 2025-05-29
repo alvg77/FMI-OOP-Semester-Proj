@@ -1,0 +1,6 @@
+#ifndef GAMEACTION_HPP
+#define GAMEACTION_HPP
+
+enum class GameAction { MOVE_UP, MOVE_DOWN, MOVE_LEFT, MOVE_RIGHT, SAVE, EXIT };
+
+#endif  // GAMEACTION_HPP

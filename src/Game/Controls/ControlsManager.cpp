@@ -1,8 +1,9 @@
 #include "ControlsManager.hpp"
 
 #include "../../Util/Util.hpp"
+#include "../GameAction.hpp"
 
-MoveDirection ControlsManager::getMovementInputs() {
+GameAction ControlsManager::getInputs() {
   while (true) {
 #ifndef _WIN32
     Util::enableTerminalRawMode();
@@ -14,12 +15,20 @@ MoveDirection ControlsManager::getMovementInputs() {
         char ch3 = getchar();
         Util::disableTerminalRawMode();
         switch (ch3) {
-          case 'A': return MoveDirection::UP;
-          case 'B': return MoveDirection::DOWN;
-          case 'C': return MoveDirection::RIGHT;
-          case 'D': return MoveDirection::LEFT;
+          case 'A':
+            return GameAction::MOVE_UP;
+          case 'B':
+            return GameAction::MOVE_DOWN;
+          case 'C':
+            return GameAction::MOVE_RIGHT;
+          case 'D':
+            return GameAction::MOVE_LEFT;
         }
       }
+    } else if (ch1 == 's') {
+      return GameAction::SAVE;
+    } else if (ch1 == 'x') {
+      return GameAction::EXIT;
     }
 
     Util::disableTerminalRawMode();
@@ -29,10 +38,14 @@ MoveDirection ControlsManager::getMovementInputs() {
     if (ch == 0 || ch == 224) {
       int ch2 = _getch();
       switch (ch2) {
-        case 72: return MoveDirection::UP;
-        case 80: return MoveDirection::DOWN;
-        case 75: return MoveDirection::LEFT;
-        case 77: return MoveDirection::RIGHT;
+        case 72:
+          return MoveDirection::UP;
+        case 80:
+          return MoveDirection::DOWN;
+        case 75:
+          return MoveDirection::LEFT;
+        case 77:
+          return MoveDirection::RIGHT;
       }
     }
 #endif

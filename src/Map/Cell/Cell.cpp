@@ -1,5 +1,7 @@
 #include "Cell.hpp"
 
+#include <nlohmann/json.hpp>
+
 #include "../../Entity/NPEntity.hpp"
 
 Cell::Cell(const NPEntity* entity) : entity(nullptr) {
@@ -26,15 +28,24 @@ Cell& Cell::operator=(const Cell& other) {
   return *this;
 }
 
-Cell::~Cell() {
-  delete entity;
-}
+Cell::~Cell() { delete entity; }
 
-void Cell::addEntity(NPEntity* entity) {
+void Cell::addEntity(const NPEntity* entity) {
   delete this->entity;
   if (entity != nullptr) {
     this->entity = entity->clone();
   }
+}
+
+nlohmann::json Cell::getEntityJson() const {
+  using nlohmann::json;
+  json entityJson;
+
+  if (entity != nullptr) {
+    entityJson = entity->toJson();
+  }
+
+  return entityJson;
 }
 
 void Cell::removeEntity() {

@@ -1,32 +1,32 @@
 #include "Monster.hpp"
 
 #include <iostream>
+#include <nlohmann/json.hpp>
 
 #include "../../../Game/Combat/CombatManager.hpp"
 #include "../../../Game/Interactions/InteractionsManager.hpp"
 #include "../Hero/Hero.hpp"
 
 Monster::Monster(const std::string& name, const unsigned level,
-                 const Stats stats)
-    : Creature(name, level, stats, 30), scalesDefenceMult(0.15) {
+                 const Stats initialStats)
+    : Creature(name, level, initialStats), scalesDefenceMult(0.15) {
   for (unsigned i = 1; i < level; ++i) {
-    levelUp();
+    scalesDefenceMult += 0.05;
+    Creature::increaseStats({10, 10, 20});
   }
 }
 
+Monster::Monster(const nlohmann::json& monsterJson)
+    : Creature(monsterJson), scalesDefenceMult(0) {
+  loadJson(monsterJson);
+}
+
 void Monster::dealDamage(Hero& hero) const {
-  std::cout << "Debug: " << getStrength() << " " << getMana() << std::endl;
   hero.takeDamage(static_cast<double>(getStrength() + getMana()) / 2);
 }
 
 void Monster::takeDamage(const double damage) {
   reduceCurrentHealth(damage - scalesDefenceMult * damage);
-}
-
-void Monster::levelUp() {
-  std::cout << "DEBUG: bad" << std::endl;
-  scalesDefenceMult += 0.05;
-  Creature::levelUp(5, 5, 5);
 }
 
 bool Monster::onStep(Hero& hero) {
@@ -43,10 +43,19 @@ void Monster::onInteract(Hero& hero) {
   }
 }
 
-char Monster::getSymbol() const {
-  return monsterSymbol;
+char Monster::getSymbol() const { return monsterSymbol; }
+
+NPEntity* Monster::clone() const { return new Monster(*this); }
+
+nlohmann::json Monster::toJson() const {
+  using nlohmann::json;
+
+  json monsterJson = Creature::toJson();
+  monsterJson["scales_defence_mult"] = scalesDefenceMult;
+
+  return monsterJson;
 }
 
-NPEntity* Monster::clone() const {
-  return new Monster(*this);
+void Monster::loadJson(const nlohmann::json& monsterJson) {
+  scalesDefenceMult = monsterJson["scales_defence_mult"];
 }
