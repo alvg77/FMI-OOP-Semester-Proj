@@ -180,7 +180,6 @@ void Hero::loadJson(const nlohmann::json& heroJson) {
   for (const json& itemData : heroJson["items"]) {
     Item* item = new Item(itemData);
     equipItem(item);
-    delete item;
   }
 }
 
