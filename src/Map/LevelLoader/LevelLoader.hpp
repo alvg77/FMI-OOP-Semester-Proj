@@ -2,8 +2,10 @@
 #define LEVELLOADER_HPP
 
 #include <nlohmann/json.hpp>
+#include <random>
 #include <vector>
 
+class NPEntity;
 struct LoadedLevel;
 
 class Cell;
@@ -24,9 +26,15 @@ class LevelLoader {
                         std::vector<std::vector<Cell*>>& grid,
                         std::vector<std::pair<unsigned, unsigned>>& freeSpaces,
                         unsigned cols);
-  static std::vector<Item*> loadItems(const json& treasurePool, unsigned n);
-  static std::vector<Monster*> loadMonsters(unsigned count, unsigned n);
+  static std::vector<NPEntity*> loadItems(const json& treasurePool,
+                                           unsigned n);
+  static std::vector<NPEntity*> loadMonsters(unsigned count, unsigned n);
+  static void placeEntitiesAtRandomAndClear(
+      std::vector<NPEntity*>& entities,
+      std::vector<std::pair<unsigned, unsigned>>& freeCells,
+      const std::vector<std::vector<Cell*>>& grid);
 
+  static std::mt19937 rng;
   static const std::string levelFileLocation;
   static const std::string monstersFileLocation;
 };

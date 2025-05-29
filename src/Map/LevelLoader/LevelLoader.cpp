@@ -10,11 +10,12 @@
 #include "../Cell/Cell.hpp"
 #include "LoadedLevel.hpp"
 
+std::mt19937 LevelLoader::rng = std::mt19937(std::random_device{}());
 const std::string LevelLoader::levelFileLocation = "../data/levels/";
 const std::string LevelLoader::monstersFileLocation =
     "../data/monsters/monsters.json";
 
-LoadedLevel LevelLoader::load(unsigned n) {
+LoadedLevel LevelLoader::load(const unsigned n) {
   const std::string levelPath =
       LevelLoader::levelFileLocation + "level" + std::to_string(n) + ".json";
 
@@ -22,20 +23,32 @@ LoadedLevel LevelLoader::load(unsigned n) {
   validateLevelJson(data);
 
   LoadedLevel level;
-  level.monsterN = data["monsterN"].get<unsigned>();
-  level.treasureN = data["treasureN"].get<unsigned>();
+  const unsigned monsterN = data["monsterN"].get<unsigned>();
+  const unsigned treasureN = data["treasureN"].get<unsigned>();
   level.rows = data["rows"].get<unsigned>();
   level.cols = data["columns"].get<unsigned>();
 
-  parseGrid(data["grid"], level.grid, level.freeSpaces, level.cols);
+  std::vector<std::pair<unsigned, unsigned>> freeSpaces;
+
+  parseGrid(data["grid"], level.grid, freeSpaces, level.cols);
 
   if (!data.contains("treasure_pool") || !data["treasure_pool"].is_array()) {
     throw std::invalid_argument("Invalid or missing treasure_pool.");
   }
-  level.items = loadItems(data["treasure_pool"], level.treasureN);
 
-  level.monsters =
-      loadMonsters(level.monsterN, n);
+  level.playerRow = freeSpaces.begin()->first;
+  level.playerCol = freeSpaces.begin()->second;
+  freeSpaces.erase(freeSpaces.begin());
+
+  level.finishRow = (freeSpaces.end() - 1)->first;
+  level.finishCol = (freeSpaces.end() - 1)->second;
+  freeSpaces.erase(freeSpaces.end() - 1);
+
+  std::vector<NPEntity*> items = loadItems(data["treasure_pool"], treasureN);
+  placeEntitiesAtRandomAndClear(items, freeSpaces, level.grid);
+
+  std::vector<NPEntity*> monsters = loadMonsters(monsterN, n);
+  placeEntitiesAtRandomAndClear(monsters, freeSpaces, level.grid);
 
   return level;
 }
@@ -93,9 +106,7 @@ void LevelLoader::parseGrid(
           freeSpaces.emplace_back(row, col);
           break;
         case 1: {
-          Wall* wall = new Wall();
-          grid[row][col] = new Cell(wall);
-          delete wall;
+          grid[row][col] = new Cell(new Wall());
           break;
         }
         default:
@@ -106,8 +117,8 @@ void LevelLoader::parseGrid(
   }
 }
 
-std::vector<Item*> LevelLoader::loadItems(const json& treasurePool,
-                                          const unsigned n) {
+std::vector<NPEntity*> LevelLoader::loadItems(const json& treasurePool,
+                                              const unsigned n) {
   if (treasurePool.size() < n) {
     throw std::invalid_argument(
         "Not enough treasures in the pool to choose from.");
@@ -116,7 +127,7 @@ std::vector<Item*> LevelLoader::loadItems(const json& treasurePool,
   std::vector<json> pool = treasurePool.get<std::vector<json>>();
   std::shuffle(pool.begin(), pool.end(), std::mt19937{std::random_device{}()});
 
-  std::vector<Item*> items;
+  std::vector<NPEntity*> items;
   for (unsigned i = 0; i < n; ++i) {
     const json& itemJson = pool[i];
     std::string name = itemJson["name"].get<std::string>();
@@ -130,8 +141,8 @@ std::vector<Item*> LevelLoader::loadItems(const json& treasurePool,
   return items;
 }
 
-std::vector<Monster*> LevelLoader::loadMonsters(const unsigned count,
-                                                const unsigned n) {
+std::vector<NPEntity*> LevelLoader::loadMonsters(const unsigned count,
+                                                 const unsigned n) {
   json data = readJson(LevelLoader::monstersFileLocation);
 
   if (!data.contains("monsters") || !data["monsters"].is_array()) {
@@ -146,7 +157,7 @@ std::vector<Monster*> LevelLoader::loadMonsters(const unsigned count,
   std::shuffle(monsterList.begin(), monsterList.end(),
                std::mt19937{std::random_device{}()});
 
-  std::vector<Monster*> monsters;
+  std::vector<NPEntity*> monsters;
   for (unsigned i = 0; i < count; ++i) {
     const json& monsterJson = monsterList[i];
 
@@ -163,4 +174,17 @@ std::vector<Monster*> LevelLoader::loadMonsters(const unsigned count,
   }
 
   return monsters;
+}
+
+void LevelLoader::placeEntitiesAtRandomAndClear(
+    std::vector<NPEntity*>& entities,
+    std::vector<std::pair<unsigned, unsigned>>& freeCells,
+    const std::vector<std::vector<Cell*>>& grid) {
+  for (NPEntity* entity : entities) {
+    std::uniform_int_distribution<unsigned> unif(0, freeCells.size() - 1);
+    const unsigned idx = unif(LevelLoader::rng);
+    grid[freeCells[idx].first][freeCells[idx].second]->addEntity(entity);
+    freeCells.erase(freeCells.begin() + idx);
+  }
+  entities.clear();
 }

@@ -15,8 +15,8 @@ class Item;
 class Hero final : public Creature {
  public:
   Hero(const std::string& name, unsigned level, const Stats& stats,
-       HeroRace characterRace, HeroClass characterClass, const Item* weapon,
-       const Item* spell, const Item* armor);
+       HeroRace characterRace, HeroClass characterClass, Item* weapon,
+       Item* spell, Item* armor);
   explicit Hero(const nlohmann::json& heroJson);
   Hero(const Hero& other);
   Hero& operator=(const Hero& other);
@@ -28,7 +28,7 @@ class Hero final : public Creature {
   void takeDamage(double damage) override;
   void heal();
 
-  void equipItem(const Item* item);
+  void equipItem(Item* item);
 
   void displayLoadout(std::ostream& os = std::cout) const;
 

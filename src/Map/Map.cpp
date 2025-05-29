@@ -15,8 +15,6 @@
 Map::Map(const unsigned n)
     : rows(0),
       cols(0),
-      monsters(0),
-      treasures(0),
       finishRow(0),
       finishCol(0),
       playerRow(0),
@@ -27,8 +25,6 @@ Map::Map(const unsigned n)
 Map::Map(const nlohmann::json& mapJson)
     : rows(0),
       cols(0),
-      monsters(0),
-      treasures(0),
       finishRow(0),
       finishCol(0),
       playerRow(0),
@@ -105,41 +101,17 @@ void Map::display(std::ostream& os) const {
 void Map::loadLevel(const unsigned n) {
   LoadedLevel level = LevelLoader::load(n);
 
-  monsters = level.monsterN;
-  treasures = level.treasureN;
   rows = level.rows;
   cols = level.cols;
+  playerRow = level.playerRow;
+  playerCol = level.playerCol;
+  finishRow = level.finishRow;
+  finishCol = level.finishCol;
   grid = std::move(level.grid);
-
-  playerRow = level.freeSpaces.front().first;
-  playerCol = level.freeSpaces.front().second;
-  level.freeSpaces.erase(level.freeSpaces.begin());
-
-  finishRow = level.freeSpaces.back().first;
-  finishCol = level.freeSpaces.back().second;
-  level.freeSpaces.pop_back();
-
-  if (level.freeSpaces.size() < monsters + treasures) {
-    throw std::runtime_error(
-        "Not enough free spaces to place player and finish.");
-  }
-
-  for (Item* item : level.items) {
-    placeEntityAtRandom(item, level.freeSpaces);
-    delete item;
-  }
-
-  for (Monster* monster : level.monsters) {
-    placeEntityAtRandom(monster, level.freeSpaces);
-    delete monster;
-  }
 }
 
 json Map::toJson() const {
   using nlohmann::json;
-
-  constexpr unsigned wallRepr = 1;
-  constexpr unsigned floorRepr = 0;
 
   json mapJson;
 
@@ -208,9 +180,7 @@ void Map::loadJson(const json& mapJson) {
   for (unsigned i = 0; i < rows; ++i) {
     for (unsigned j = 0; j < cols; ++j) {
       if (gridData[i][j] == 1) {
-        const Wall* w = new Wall();
-        grid[i][j] = new Cell(w);
-        delete w;
+        grid[i][j] = new Cell(new Wall());
       } else {
         grid[i][j] = new Cell();
       }
@@ -221,32 +191,17 @@ void Map::loadJson(const json& mapJson) {
   for (const json& monsterData : monstersJson) {
     const unsigned r = monsterData["row"];
     const unsigned c = monsterData["column"];
-    const NPEntity* m = new Monster(monsterData);
-    grid[r][c]->addEntity(m);
-    ++monsters;
-    delete m;
+
+    grid[r][c]->addEntity(new Monster(monsterData));
   }
 
   const std::vector<json> treasuresJson = mapJson["treasures"];
   for (const json& treasureData : treasuresJson) {
     const unsigned r = treasureData["row"];
     const unsigned c = treasureData["column"];
-    const NPEntity* item = new Item(treasureData);
-    grid[r][c]->addEntity(item);
-    ++treasures;
-    delete item;
+
+    grid[r][c]->addEntity(new Item(treasureData));
   }
-}
-
-void Map::placeEntityAtRandom(
-    NPEntity* entity, std::vector<std::pair<unsigned, unsigned>>& freeCells) {
-  std::uniform_int_distribution<unsigned> unif(0, freeCells.size() - 1);
-
-  const unsigned idx = unif(Map::rng);
-
-  grid[freeCells[idx].first][freeCells[idx].second]->addEntity(entity);
-
-  freeCells.erase(freeCells.begin() + idx);
 }
 
 bool Map::isWithinBounds(const unsigned row, const unsigned col) const {

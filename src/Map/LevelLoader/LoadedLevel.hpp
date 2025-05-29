@@ -2,14 +2,10 @@
 #define LOADEDLEVEL_HPP
 
 struct LoadedLevel {
-  unsigned rows{};
-  unsigned cols{};
-  unsigned monsterN{};
-  unsigned treasureN{};
+  unsigned rows{}, cols{};
+  unsigned playerRow{}, playerCol{};
+  unsigned finishRow{}, finishCol{};
   std::vector<std::vector<Cell*>> grid;
-  std::vector<std::pair<unsigned, unsigned>> freeSpaces;
-  std::vector<Item*> items{};
-  std::vector<Monster*> monsters{};
 };
 
-#endif //LOADEDLEVEL_HPP
+#endif  // LOADEDLEVEL_HPP

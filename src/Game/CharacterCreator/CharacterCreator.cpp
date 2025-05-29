@@ -29,14 +29,14 @@ Hero* CharacterCreator::createHero() {
   const Stats racialBonus = getRacialBonus(race);
   const Stats finalStats = initialStats + racialBonus;
 
-  const Item defaultArmor("Light Leather Armor", 0.05, ItemType::ARMOR);
-  const Item defaultSpell("Firebolt", 0.1, ItemType::SPELL);
-  const Item defaultWeapon("Iron Sword", 0.1, ItemType::WEAPON);
+  Item* defaultArmor = new Item("Light Leather Armor", 0.05, ItemType::ARMOR);
+  Item* defaultSpell = new Item("Firebolt", 0.1, ItemType::SPELL);
+  Item* defaultWeapon = new Item("Iron Sword", 0.1, ItemType::WEAPON);
 
   return new Hero(name,          1,
                   finalStats,    race,
-                  heroClass,     &defaultWeapon,
-                  &defaultSpell, &defaultArmor);
+                  heroClass,     defaultWeapon,
+                  defaultSpell, defaultArmor);
 }
 
 Stats CharacterCreator::getInitialStats(const HeroClass hClass) {

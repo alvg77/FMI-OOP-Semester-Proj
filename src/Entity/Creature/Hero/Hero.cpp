@@ -7,7 +7,7 @@
 
 Hero::Hero(const std::string& name, const unsigned level, const Stats& stats,
            const HeroRace characterRace, const HeroClass characterClass,
-           const Item* weapon, const Item* spell, const Item* armor)
+           Item* weapon, Item* spell, Item* armor)
     : Creature(name, level, stats),
       characterRace(characterRace),
       characterClass(characterClass),
@@ -103,7 +103,7 @@ void Hero::heal() {
   }
 }
 
-void Hero::equipItem(const Item* item) {
+void Hero::equipItem(Item* item) {
   if (item == nullptr) {
     return;
   }
@@ -111,15 +111,15 @@ void Hero::equipItem(const Item* item) {
   switch (item->getItemType()) {
     case ItemType::ARMOR:
       delete armor;
-      armor = item->clone();
+      armor = item;
       break;
     case ItemType::WEAPON:
       delete weapon;
-      weapon = item->clone();
+      weapon = item;
       break;
     case ItemType::SPELL:
       delete spell;
-      spell = item->clone();
+      spell = item;
       break;
   }
 }
@@ -178,7 +178,7 @@ void Hero::loadJson(const nlohmann::json& heroJson) {
   characterClass = static_cast<HeroClass>(heroJson["class"].get<unsigned>());
 
   for (const json& itemData : heroJson["items"]) {
-    const Item* item = new Item(itemData);
+    Item* item = new Item(itemData);
     equipItem(item);
     delete item;
   }

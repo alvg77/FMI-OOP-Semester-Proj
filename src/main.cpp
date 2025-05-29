@@ -1,4 +1,3 @@
-#include "Game/Controls/ControlsManager.hpp"
 #include "Game/GameManager.hpp"
 
 int main() {

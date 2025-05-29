@@ -31,17 +31,14 @@ class Map {
 
  private:
   unsigned rows, cols;
-  std::vector<std::vector<Cell*>> grid;
-  unsigned monsters, treasures;
   unsigned finishRow, finishCol;
   unsigned playerRow, playerCol;
+  std::vector<std::vector<Cell*>> grid;
 
   std::mt19937 rng = std::mt19937(std::random_device{}());
 
   void loadLevel(unsigned n);
   void loadJson(const nlohmann::json& mapJson);
-  void placeEntityAtRandom(
-      NPEntity* entity, std::vector<std::pair<unsigned, unsigned>>& freeCells);
 
   bool isWithinBounds(unsigned row, unsigned col) const;
 };

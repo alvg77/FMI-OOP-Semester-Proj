@@ -4,11 +4,7 @@
 
 #include "../../Entity/NPEntity.hpp"
 
-Cell::Cell(const NPEntity* entity) : entity(nullptr) {
-  if (entity != nullptr) {
-    this->entity = entity->clone();
-  }
-}
+Cell::Cell(NPEntity* entity) : entity(entity) {}
 
 Cell::Cell(const Cell& other) : entity(nullptr) {
   if (other.entity != nullptr) {
@@ -30,11 +26,9 @@ Cell& Cell::operator=(const Cell& other) {
 
 Cell::~Cell() { delete entity; }
 
-void Cell::addEntity(const NPEntity* entity) {
+void Cell::addEntity(NPEntity* entity) {
   delete this->entity;
-  if (entity != nullptr) {
-    this->entity = entity->clone();
-  }
+  this->entity = entity;
 }
 
 nlohmann::json Cell::getEntityJson() const {
@@ -53,7 +47,7 @@ void Cell::removeEntity() {
   this->entity = nullptr;
 }
 
-bool Cell::step(Hero& hero) {
+bool Cell::step(Hero& hero) const {
   if (entity != nullptr) {
     return entity->onStep(hero);
   }

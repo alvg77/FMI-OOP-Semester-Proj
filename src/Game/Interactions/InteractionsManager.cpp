@@ -23,7 +23,7 @@ void InteractionsManager::promptHeroItemEquip(Hero& hero, const Item* item) {
     std::cin.ignore(1000, '\n');
 
     if (choice == 'y') {
-      hero.equipItem(item);
+      hero.equipItem(item->clone());
     } else if (choice != 'n') {
       std::cout << "Invalid choice!" << std::endl;
     }
