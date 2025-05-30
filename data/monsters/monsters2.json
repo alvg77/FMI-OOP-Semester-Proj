@@ -5,7 +5,7 @@
       "stats": {
         "strength": 20,
         "mana": 12,
-        "maxHealth": 63
+        "maxhealth": 63
       }
     },
     {
@@ -13,7 +13,7 @@
       "stats": {
         "strength": 15,
         "mana": 16,
-        "maxHealth": 58
+        "maxhealth": 58
       }
     },
     {
@@ -21,7 +21,7 @@
       "stats": {
         "strength": 27,
         "mana": 7,
-        "maxHealth": 82
+        "maxhealth": 60
       }
     },
     {
@@ -29,7 +29,7 @@
       "stats": {
         "strength": 8,
         "mana": 22,
-        "maxHealth": 68
+        "maxhealth": 68
       }
     },
     {
@@ -37,7 +37,7 @@
       "stats": {
         "strength": 23,
         "mana": 11,
-        "maxHealth": 77
+        "maxhealth": 60
       }
     },
     {
@@ -45,7 +45,7 @@
       "stats": {
         "strength": 6,
         "mana": 27,
-        "maxHealth": 57
+        "maxhealth": 57
       }
     },
     {
@@ -53,7 +53,7 @@
       "stats": {
         "strength": 30,
         "mana": 2,
-        "maxHealth": 81
+        "maxhealth": 81
       }
     },
     {
@@ -61,7 +61,7 @@
       "stats": {
         "strength": 17,
         "mana": 17,
-        "maxHealth": 65
+        "maxhealth": 65
       }
     }
   ]

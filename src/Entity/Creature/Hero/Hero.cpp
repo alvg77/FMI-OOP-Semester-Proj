@@ -5,29 +5,27 @@
 #include "../../Item/Item.hpp"
 #include "../Monster/Monster.hpp"
 
+// TODO: ADD CURRENT HEALTH
 Hero::Hero(const std::string& name, const unsigned level, const Stats& stats,
-           const HeroRace characterRace, const HeroClass characterClass,
-           Item* weapon, Item* spell, Item* armor)
-    : Creature(name, level, stats),
-      characterRace(characterRace),
-      characterClass(characterClass),
-      armor(nullptr),
-      weapon(nullptr),
-      spell(nullptr) {
-  equipItem(weapon);
-  equipItem(spell);
-  equipItem(armor);
-}
-
-Hero::Hero(const nlohmann::json& heroJson)
-    : Creature(heroJson), armor(nullptr), weapon(nullptr), spell(nullptr) {
-  loadJson(heroJson);
-}
+           const double currentHealth, const HeroRace heroRace,
+           const HeroClass heroClass, Item* weapon, Item* spell, Item* armor)
+    : name(name),
+      level(level),
+      stats(stats),
+      currentHealth(currentHealth),
+      heroRace(heroRace),
+      heroClass(heroClass),
+      armor(weapon),
+      weapon(spell),
+      spell(armor) {}
 
 Hero::Hero(const Hero& other)
-    : Creature(other),
-      characterRace(other.characterRace),
-      characterClass(other.characterClass),
+    : name(other.name),
+      level(other.level),
+      stats(other.stats),
+      currentHealth(other.currentHealth),
+      heroRace(other.heroRace),
+      heroClass(other.heroClass),
       armor(nullptr),
       weapon(nullptr),
       spell(nullptr) {
@@ -57,13 +55,16 @@ Hero::~Hero() {
   delete spell;
 }
 
-bool Hero::levelUp(const Stats& stats) {
-  if (stats.mana + stats.strength + stats.maxHealth != lvlUpPoints) {
+bool Hero::levelUp(const Stats& incrementStats) {
+  if (incrementStats.mana + incrementStats.strength +
+          incrementStats.maxHealth !=
+      lvlUpPoints) {
     return false;
   }
 
-  increaseStats(stats);
-  increaseCurrentHealth(getMaxHealth() - getCurrentHealth());
+  ++level;
+  stats = stats + incrementStats;
+  currentHealth = stats.maxHealth;
 
   return true;
 }
@@ -71,7 +72,7 @@ bool Hero::levelUp(const Stats& stats) {
 void Hero::dealDamage(Monster& monster, const AttackType attackType) const {
   switch (attackType) {
     case AttackType::WEAPON: {
-      double weaponDamage = getStrength();
+      double weaponDamage = stats.strength;
       if (weapon != nullptr) {
         weaponDamage += weapon->getBonus() * weaponDamage;
       }
@@ -79,7 +80,7 @@ void Hero::dealDamage(Monster& monster, const AttackType attackType) const {
       break;
     }
     case AttackType::SPELL: {
-      double spellDamage = getMana();
+      double spellDamage = stats.mana;
       if (spell != nullptr) {
         spellDamage += spell->getBonus() * spellDamage;
       }
@@ -93,13 +94,12 @@ void Hero::takeDamage(double damage) {
   if (armor != nullptr) {
     damage -= armor->getBonus() * damage;
   }
-  reduceCurrentHealth(damage);
+  currentHealth -= damage;
 }
 
 void Hero::heal() {
-  if (getCurrentHealth() < static_cast<double>(getMaxHealth()) / 2) {
-    Creature::increaseCurrentHealth(static_cast<double>(getMaxHealth()) / 2 -
-                                    getCurrentHealth());
+  if (currentHealth < static_cast<double>(stats.maxHealth) / 2) {
+    currentHealth = static_cast<double>(stats.maxHealth) / 2;
   }
 }
 
@@ -124,6 +124,32 @@ void Hero::equipItem(Item* item) {
   }
 }
 
+bool Hero::isAlive() const { return currentHealth > 0; }
+
+void Hero::displayStats(std::ostream& os) const {
+  os << "str: " << stats.strength << ", mana: " << stats.mana
+     << ", max health: " << stats.maxHealth << std::endl;
+}
+
+void Hero::displayAttackDmg(std::ostream& os) const {
+  std::cout << "Weapon attack damage: "
+            << (weapon != nullptr ? stats.strength * (1 + weapon->getBonus())
+                                  : stats.strength)
+            << std::endl;
+
+  std::cout << "Spell attack damage: "
+            << (spell != nullptr ? stats.mana * (1 + spell->getBonus())
+                                 : stats.mana)
+            << std::endl;
+}
+
+void Hero::displayStatus(std::ostream& os) const {
+  os << name << ": " << (currentHealth >= 0 ? currentHealth : 0) << "/"
+     << stats.maxHealth << std::endl;
+  os << "Resistence: " << (armor != nullptr ? armor->getBonus() : 0)
+     << std::endl;
+}
+
 void Hero::displayLoadout(std::ostream& os) const {
   if (armor != nullptr) {
     os << *armor << std::endl;
@@ -133,12 +159,15 @@ void Hero::displayLoadout(std::ostream& os) const {
 
   if (weapon != nullptr) {
     os << *weapon << std::endl;
+    os << "Weapon damage: " << stats.strength * (1 + weapon->getBonus())
+       << std::endl;
   } else {
     os << "No weapon equipped." << std::endl;
   }
 
   if (spell != nullptr) {
     os << *spell << std::endl;
+    os << "Spell damage: " << stats.mana * (1 + spell->getBonus()) << std::endl;
   } else {
     os << "No spell equipped." << std::endl;
   }
@@ -147,10 +176,16 @@ void Hero::displayLoadout(std::ostream& os) const {
 nlohmann::json Hero::toJson() const {
   using nlohmann::json;
 
-  json heroJson = Creature::toJson();
+  json heroJson;
 
-  heroJson["race"] = characterRace;
-  heroJson["class"] = characterClass;
+  heroJson["name"] = name;
+  heroJson["level"] = level;
+  heroJson["strength"] = stats.strength;
+  heroJson["mana"] = stats.mana;
+  heroJson["maxhealth"] = stats.maxHealth;
+  heroJson["currenthealth"] = currentHealth;
+  heroJson["race"] = heroRace;
+  heroJson["class"] = heroClass;
 
   std::vector<json> itemsJson;
 
@@ -171,25 +206,15 @@ nlohmann::json Hero::toJson() const {
   return heroJson;
 }
 
-void Hero::loadJson(const nlohmann::json& heroJson) {
-  using nlohmann::json;
-
-  characterRace = static_cast<HeroRace>(heroJson["race"].get<unsigned>());
-  characterClass = static_cast<HeroClass>(heroJson["class"].get<unsigned>());
-
-  for (const json& itemData : heroJson["items"]) {
-    Item* item = new Item(itemData);
-    equipItem(item);
-  }
-}
-
 void Hero::swap(Hero& other) noexcept {
-  Creature::swap(other);
-
   using std::swap;
 
-  swap(characterRace, other.characterRace);
-  swap(characterClass, other.characterClass);
+  swap(name, other.name);
+  swap(level, other.level);
+  swap(stats, other.stats);
+  swap(currentHealth, other.currentHealth);
+  swap(heroRace, other.heroRace);
+  swap(heroClass, other.heroClass);
   swap(armor, other.armor);
   swap(weapon, other.weapon);
   swap(spell, other.spell);

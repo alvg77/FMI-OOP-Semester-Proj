@@ -8,8 +8,6 @@
 Item::Item(const std::string& name, const double bonus, const ItemType itemType)
     : name(name), bonus(bonus), itemType(itemType) {}
 
-Item::Item(const nlohmann::json& itemJson) { loadJson(itemJson); }
-
 std::string Item::getName() const { return name; }
 
 double Item::getBonus() const { return bonus; }
@@ -57,13 +55,7 @@ nlohmann::json Item::toJson() const {
 
   itemJson["name"] = name;
   itemJson["bonus"] = bonus;
-  itemJson["itemtype"] = static_cast<unsigned>(itemType);
+  itemJson["itemtype"] = itemType;
 
   return itemJson;
-}
-
-void Item::loadJson(const nlohmann::json& itemJson) {
-  name = itemJson["name"].get<std::string>();
-  bonus = itemJson["bonus"].get<double>();
-  itemType = static_cast<ItemType>(itemJson["itemtype"].get<unsigned>());
 }

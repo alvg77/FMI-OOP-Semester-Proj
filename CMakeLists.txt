@@ -14,8 +14,6 @@ add_executable(FMI_OOP_Semester_Proj
         src/Entity/Creature/Hero/Hero.hpp
         src/Entity/Creature/Monster/Monster.cpp
         src/Entity/Creature/Monster/Monster.hpp
-        src/Entity/Creature/Creature.cpp
-        src/Entity/Creature/Creature.hpp
         src/Entity/Item/Item.cpp
         src/Entity/Item/Item.hpp
         src/Entity/Wall/Wall.cpp
@@ -48,6 +46,14 @@ add_executable(FMI_OOP_Semester_Proj
         src/Game/Save/SaveManager.cpp
         src/Game/Save/SaveManager.hpp
         src/Game/GameContext.hpp
+        src/Entity/Creature/Hero/HeroFactory.cpp
+        src/Entity/Creature/Hero/HeroFactory.hpp
+        src/Entity/Creature/Monster/MonsterFactory.cpp
+        src/Entity/Creature/Monster/MonsterFactory.hpp
+        src/Entity/Item/ItemFactory.cpp
+        src/Entity/Item/ItemFactory.hpp
+        src/Map/MapFactory.cpp
+        src/Map/MapFactory.hpp
 )
 
 add_executable(FMI_OOP_Semester_Proj_Level_Editor

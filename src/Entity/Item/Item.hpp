@@ -10,7 +10,6 @@
 class Item final : public NPEntity {
  public:
   Item(const std::string& name, double bonus, ItemType itemType);
-  explicit Item(const nlohmann::json& itemJson);
 
   std::string getName() const;
   double getBonus() const;
@@ -29,8 +28,6 @@ class Item final : public NPEntity {
   std::string name;
   double bonus{};
   ItemType itemType;
-
-  void loadJson(const nlohmann::json& itemJson);
 
   static constexpr char treasureSymbol = 'T';
 };

@@ -3,12 +3,13 @@
 #include <fstream>
 #include <nlohmann/json.hpp>
 
+#include "../Map/MapFactory.hpp"
 #include "../Util/Util.hpp"
 #include "CharacterCreator/CharacterCreator.hpp"
 #include "Controls/ControlsManager.hpp"
+#include "GameAction.hpp"
 #include "Interactions/InteractionsManager.hpp"
 #include "Save/SaveManager.hpp"
-#include "GameAction.hpp"
 
 GameManager::GameManager() : level(1), ctx({nullptr, nullptr}) {}
 
@@ -21,7 +22,7 @@ GameManager::~GameManager() {
 
 void GameManager::runGameLoop() {
   std::cout << "1. New Game\n2. Load Game\n3. Exit Game" << std::endl;
-  bool correctChoice = true;
+  bool correctChoice;
 
   do {
     unsigned short choice;
@@ -32,7 +33,7 @@ void GameManager::runGameLoop() {
       case 1:
         level = 1;
         ctx.hero = CharacterCreator::createHero();
-        ctx.map = new Map(level);
+        ctx.map = MapFactory::createMap(level);
         correctChoice = true;
         break;
       case 2:
@@ -86,7 +87,7 @@ void GameManager::runGameLoop() {
         InteractionsManager::promptHeroLevelUp(*ctx.hero);
 
         delete ctx.map;
-        ctx.map = new Map(level);
+        ctx.map = MapFactory::createMap(level);
 
         SaveManager::save(ctx);
       }

@@ -15,8 +15,9 @@ class Hero;
 
 class Map {
  public:
-  explicit Map(unsigned n);
-  explicit Map(const nlohmann::json& mapJson);
+  Map(unsigned rows, unsigned cols, unsigned finishRow, unsigned finishCol,
+      unsigned playerRow, unsigned playerCol,
+      const std::vector<std::vector<Cell*>>& grid);
   Map(const Map& other) = delete;
   Map& operator=(const Map& other) = delete;
   ~Map();
@@ -36,9 +37,6 @@ class Map {
   std::vector<std::vector<Cell*>> grid;
 
   std::mt19937 rng = std::mt19937(std::random_device{}());
-
-  void loadLevel(unsigned n);
-  void loadJson(const nlohmann::json& mapJson);
 
   bool isWithinBounds(unsigned row, unsigned col) const;
 };

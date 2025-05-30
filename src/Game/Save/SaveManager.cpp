@@ -5,7 +5,9 @@
 #include <stdexcept>
 
 #include "../../Entity/Creature/Hero/Hero.hpp"
+#include "../../Entity/Creature/Hero/HeroFactory.hpp"
 #include "../../Map/Map.hpp"
+#include "../../Map/MapFactory.hpp"
 #include "../GameContext.hpp"
 
 enum class ItemType;
@@ -50,8 +52,8 @@ GameContext SaveManager::loadGame() {
 
   file >> jsonData;
 
-  ctx.hero = new Hero(jsonData["hero"]);
-  ctx.map = new Map(jsonData["map"]);
+  ctx.hero = HeroFactory::createHeroFromJson(jsonData["hero"]);
+  ctx.map = MapFactory::createMapFromJson(jsonData["map"]);
 
   file.close();
 

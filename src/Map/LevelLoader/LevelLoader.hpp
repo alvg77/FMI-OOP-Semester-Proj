@@ -6,18 +6,17 @@
 #include <vector>
 
 class NPEntity;
-struct LoadedLevel;
-
 class Cell;
 class Item;
 class Monster;
 struct Stats;
+class Map;
 
 using nlohmann::json;
 
 class LevelLoader {
  public:
-  static LoadedLevel load(unsigned n);
+  static Map* load(unsigned n);
 
  private:
   static void validateLevelJson(const json& data);

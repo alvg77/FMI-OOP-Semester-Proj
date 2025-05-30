@@ -5,44 +5,51 @@
 #include <nlohmann/adl_serializer.hpp>
 
 #include "../../../Game/Combat/AttackType.hpp"
-#include "../Creature.hpp"
+#include "../Stats.hpp"
 #include "Class/HeroClass.hpp"
 #include "Race/HeroRace.hpp"
 
 class Monster;
 class Item;
+struct Stats;
 
-class Hero final : public Creature {
+class Hero {
  public:
   Hero(const std::string& name, unsigned level, const Stats& stats,
-       HeroRace characterRace, HeroClass characterClass, Item* weapon,
-       Item* spell, Item* armor);
-  explicit Hero(const nlohmann::json& heroJson);
+       double currentHealth, HeroRace heroRace, HeroClass heroClass,
+       Item* weapon, Item* spell, Item* armor);
   Hero(const Hero& other);
   Hero& operator=(const Hero& other);
-  ~Hero() override;
+  ~Hero();
 
-  bool levelUp(const Stats& stats);
+  bool levelUp(const Stats& incrementStats);
 
   void dealDamage(Monster& monster, AttackType attackType) const;
-  void takeDamage(double damage) override;
+  void takeDamage(double damage);
   void heal();
 
   void equipItem(Item* item);
 
+  bool isAlive() const;
+
+  void displayStats(std::ostream& os = std::cout) const;
+  void displayAttackDmg(std::ostream& os = std::cout) const;
+  void displayStatus(std::ostream& os = std::cout) const;
   void displayLoadout(std::ostream& os = std::cout) const;
 
-  nlohmann::json toJson() const override;
+  nlohmann::json toJson() const;
 
  private:
-  HeroRace characterRace;
-  HeroClass characterClass;
+  std::string name;
+  unsigned level;
+  Stats stats;
+  double currentHealth;
+  HeroRace heroRace;
+  HeroClass heroClass;
 
   Item* armor;
   Item* weapon;
   Item* spell;
-
-  void loadJson(const nlohmann::json& heroJson) override;
 
   void swap(Hero& other) noexcept;
 

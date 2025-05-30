@@ -38,9 +38,7 @@ void InteractionsManager::promptHeroLevelUp(Hero& hero) {
   std::cout << "You have reached the end of the level! Level up your character!"
             << std::endl;
   std::cout << "Current stats: " << std::endl;
-  std::cout << "Strength: " << hero.getStrength() << std::endl;
-  std::cout << "Mana: " << hero.getMana() << std::endl;
-  std::cout << "Max Health: " << hero.getMaxHealth() << std::endl;
+  hero.displayStats();
 
   do {
     std::cout << "You have 30 points to allocate: " << std::endl;

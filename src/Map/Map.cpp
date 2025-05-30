@@ -12,25 +12,16 @@
 #include "LevelLoader/LevelLoader.hpp"
 #include "LevelLoader/LoadedLevel.hpp"
 
-Map::Map(const unsigned n)
-    : rows(0),
-      cols(0),
-      finishRow(0),
-      finishCol(0),
-      playerRow(0),
-      playerCol(0) {
-  loadLevel(n);
-}
-
-Map::Map(const nlohmann::json& mapJson)
-    : rows(0),
-      cols(0),
-      finishRow(0),
-      finishCol(0),
-      playerRow(0),
-      playerCol(0) {
-  loadJson(mapJson);
-}
+Map::Map(const unsigned rows, const unsigned cols, const unsigned finishRow, const unsigned finishCol,
+         const unsigned playerRow, const unsigned playerCol,
+         const std::vector<std::vector<Cell*>>& grid)
+    : rows(rows),
+      cols(cols),
+      finishRow(finishRow),
+      finishCol(finishCol),
+      playerRow(playerRow),
+      playerCol(playerCol),
+      grid(grid) {}
 
 Map::~Map() {
   for (unsigned i = 0; i < rows; ++i) {
@@ -98,18 +89,6 @@ void Map::display(std::ostream& os) const {
   }
 }
 
-void Map::loadLevel(const unsigned n) {
-  LoadedLevel level = LevelLoader::load(n);
-
-  rows = level.rows;
-  cols = level.cols;
-  playerRow = level.playerRow;
-  playerCol = level.playerCol;
-  finishRow = level.finishRow;
-  finishCol = level.finishCol;
-  grid = std::move(level.grid);
-}
-
 json Map::toJson() const {
   using nlohmann::json;
 
@@ -165,43 +144,6 @@ json Map::toJson() const {
   mapJson["grid"] = mapGrid;
 
   return mapJson;
-}
-
-void Map::loadJson(const json& mapJson) {
-  cols = mapJson["columns"];
-  rows = mapJson["rows"];
-  playerRow = mapJson["playerRow"];
-  playerCol = mapJson["playerCol"];
-  finishRow = mapJson["finishRow"];
-  finishCol = mapJson["finishCol"];
-
-  grid.resize(rows, std::vector<Cell*>(cols, nullptr));
-  const std::vector<json> gridData = mapJson["grid"];
-  for (unsigned i = 0; i < rows; ++i) {
-    for (unsigned j = 0; j < cols; ++j) {
-      if (gridData[i][j] == 1) {
-        grid[i][j] = new Cell(new Wall());
-      } else {
-        grid[i][j] = new Cell();
-      }
-    }
-  }
-
-  const std::vector<json> monstersJson = mapJson["monsters"];
-  for (const json& monsterData : monstersJson) {
-    const unsigned r = monsterData["row"];
-    const unsigned c = monsterData["column"];
-
-    grid[r][c]->addEntity(new Monster(monsterData));
-  }
-
-  const std::vector<json> treasuresJson = mapJson["treasures"];
-  for (const json& treasureData : treasuresJson) {
-    const unsigned r = treasureData["row"];
-    const unsigned c = treasureData["column"];
-
-    grid[r][c]->addEntity(new Item(treasureData));
-  }
 }
 
 bool Map::isWithinBounds(const unsigned row, const unsigned col) const {

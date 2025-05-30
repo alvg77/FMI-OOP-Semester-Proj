@@ -5,46 +5,56 @@
 
 #include "../../Entity/Creature/Hero/Hero.hpp"
 #include "../../Util/Util.hpp"
+#include "../Interactions/InteractionsManager.hpp"
 
 void CombatManager::initiateCombat(Hero& hero, Monster& monster) {
   Util::clearTerminal();
 
-  std::cout << "Battle between " << hero.getName() << " and "
-            << monster.getName() << " has started!" << std::endl;
+  std::cout << "Battle begins!" << std::endl;
 
   const CoinToss result = coinToss();
   bool heroTurn = (result == CoinToss::HEADS);
 
   std::cout << "\n" << (heroTurn ? "Hero" : "Monster") << " goes first!\n";
+  InteractionsManager::promptContinue();
+
+  std::cout << "monster is alive " << monster.isAlive() << std::endl;
+  std::cout << "hero is alive " << hero.isAlive() << std::endl;
 
   while (hero.isAlive() && monster.isAlive()) {
+    Util::clearTerminal();
+
     if (heroTurn) {
-      std::cout << "\nHero makes an attack!" << std::endl;
+      std::cout << "\nHero makes an attack!\n" << std::endl;
+      hero.displayAttackDmg();
       playerAttack(hero, monster);
     } else {
       std::cout << "\nMonster makes an attack!" << std::endl;
       monsterAttack(hero, monster);
     }
 
-    std::cout << "Hero HP: " << hero.getCurrentHealth() << "/"
-              << hero.getMaxHealth() << std::endl;
-    std::cout << "Monster HP: " << monster.getCurrentHealth() << "/"
-              << monster.getMaxHealth() << "\n" << std::endl;
+    std::cout << "\n--------\n\n";
+    std::cout << "Hero:" << std::endl;
+    hero.displayStatus();
+    std::cout << "\n--------\n\n";
+    std::cout << "Monster:" << std::endl;
+    monster.displayStatus();
+    std::cout << "\n--------\n\n";
 
     heroTurn = !heroTurn;
+
+    InteractionsManager::promptContinue();
   }
+
+  Util::clearTerminal();
 
   if (hero.isAlive()) {
-    std::cout << hero.getName() << " has defeated " << monster.getName() << "!"
-              << std::endl;
+    std::cout << "You have defeated the enemy!" << std::endl;
     hero.heal();
   } else {
-    std::cout << monster.getName() << " has defeated " << hero.getName() << "!"
-              << std::endl;
+    std::cout << "You have been defeated in combat!" << std::endl;
   }
-
-  std::cout << "Press enter to continue...";
-  std::cin.get();
+  InteractionsManager::promptContinue();
 }
 
 CoinToss CombatManager::coinToss() {

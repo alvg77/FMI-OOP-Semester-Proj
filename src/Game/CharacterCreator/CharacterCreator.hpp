@@ -6,10 +6,6 @@
 class CharacterCreator {
  public:
   static Hero* createHero();
-
- private:
-  static Stats getInitialStats(HeroClass clas);
-  static Stats getRacialBonus(HeroRace race);
 };
 
 #endif  // CHARACTERCREATOR_HPP

@@ -4,10 +4,12 @@
 #include <random>
 
 #include "../../Entity/Creature/Monster/Monster.hpp"
+#include "../../Entity/Creature/Monster/MonsterFactory.hpp"
 #include "../../Entity/Creature/Stats.hpp"
 #include "../../Entity/Item/Item.hpp"
 #include "../../Entity/Wall/Wall.hpp"
 #include "../Cell/Cell.hpp"
+#include "../Map.hpp"
 #include "LoadedLevel.hpp"
 
 std::mt19937 LevelLoader::rng = std::mt19937(std::random_device{}());
@@ -16,7 +18,7 @@ const std::string LevelLoader::monstersFileLocation =
     "../data/monsters/monsters";
 const std::string LevelLoader::itemsFileLocation = "../data/items/items";
 
-LoadedLevel LevelLoader::load(const unsigned n) {
+Map* LevelLoader::load(const unsigned n) {
   const std::string levelPath =
       LevelLoader::levelFileLocation + std::to_string(n) + ".json";
 
@@ -53,7 +55,7 @@ LoadedLevel LevelLoader::load(const unsigned n) {
   std::vector<NPEntity*> monsters = loadMonsters(monsterN, n);
   placeEntitiesAtRandomAndClear(monsters, freeSpaces, level.grid);
 
-  return level;
+  return new Map(level.rows, level.cols, level.finishRow, level.finishCol, level.playerRow, level.playerCol, level.grid);
 }
 
 void LevelLoader::validateLevelJson(const json& data) {
@@ -176,9 +178,9 @@ std::vector<NPEntity*> LevelLoader::loadMonsters(const unsigned count,
     Stats stats{};
     stats.strength = monsterJson["stats"]["strength"].get<unsigned>();
     stats.mana = monsterJson["stats"]["mana"].get<unsigned>();
-    stats.maxHealth = monsterJson["stats"]["maxHealth"].get<unsigned>();
+    stats.maxHealth = monsterJson["stats"]["maxhealth"].get<unsigned>();
 
-    Monster* monster = new Monster(name, level, stats);
+    Monster* monster = MonsterFactory::createMonster(name, level, stats);
     monsters.push_back(monster);
   }
 
