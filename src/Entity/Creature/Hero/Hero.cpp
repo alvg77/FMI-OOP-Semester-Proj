@@ -5,7 +5,6 @@
 #include "../../Item/Item.hpp"
 #include "../Monster/Monster.hpp"
 
-// TODO: ADD CURRENT HEALTH
 Hero::Hero(const std::string& name, const unsigned level, const Stats& stats,
            const double currentHealth, const HeroRace heroRace,
            const HeroClass heroClass, Item* weapon, Item* spell, Item* armor)
@@ -15,9 +14,9 @@ Hero::Hero(const std::string& name, const unsigned level, const Stats& stats,
       currentHealth(currentHealth),
       heroRace(heroRace),
       heroClass(heroClass),
-      armor(weapon),
-      weapon(spell),
-      spell(armor) {}
+      armor(armor),
+      weapon(weapon),
+      spell(spell) {}
 
 Hero::Hero(const Hero& other)
     : name(other.name),
