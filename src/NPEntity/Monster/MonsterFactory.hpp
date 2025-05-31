@@ -41,6 +41,7 @@ class MonsterFactory {
    *
    * @param monsterJson JSON object containing monster attributes.
    * @return Pointer to a new Monster object cast as an NPEntity.
+   * @throws std::runtime_error if a an improper value is read from the JSON
    */
   static NPEntity* createMonsterFromJson(const nlohmann::json& monsterJson);
 

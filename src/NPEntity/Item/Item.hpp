@@ -25,10 +25,10 @@ class Item final : public NPEntity {
   /**
    * @brief Constructs an item with a name, bonus value, and item type.
    * @param name Name of the item.
-   * @param bonus Bonus multiplier or stat the item provides.
+   * @param mult Bonus multiplier or stat the item provides.
    * @param itemType Type of the item (weapon, spell, armor).
    */
-  Item(const std::string& name, double bonus, ItemType itemType);
+  Item(const std::string& name, double mult, ItemType itemType);
 
   /**
    * @brief Gets the name of the item.
@@ -40,7 +40,7 @@ class Item final : public NPEntity {
    * @brief Gets the item's bonus value.
    * @return The item's bonus multiplier.
    */
-  double getBonus() const;
+  double getMult() const;
 
   /**
    * @brief Gets the type of the item.
@@ -89,7 +89,7 @@ class Item final : public NPEntity {
 
  private:
   std::string name;   ///< Name of the item.
-  double bonus{};     ///< Bonus multiplier provided by the item.
+  double mult;     ///< Bonus multiplier provided by the item.
   ItemType itemType;  ///< Type of the item (weapon, spell, armor).
 
   static constexpr char treasureSymbol = 'T';  ///< Map symbol for items.

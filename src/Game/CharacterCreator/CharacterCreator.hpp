@@ -7,7 +7,7 @@
 #ifndef CHARACTERCREATOR_HPP
 #define CHARACTERCREATOR_HPP
 
-#include "../../Entity/Creature/Hero/Hero.hpp"
+#include "../../Hero/Hero.hpp"
 
 /**
  * @brief Provides functionality for interactively creating a Hero character.

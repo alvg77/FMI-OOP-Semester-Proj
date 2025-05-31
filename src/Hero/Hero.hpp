@@ -10,8 +10,8 @@
 #include <iostream>
 #include <nlohmann/adl_serializer.hpp>
 
-#include "../../../Game/Combat/AttackType.hpp"
-#include "../Stats.hpp"
+#include "../Game/Combat/AttackType.hpp"
+#include "../Stats/Stats.hpp"
 #include "Class/HeroClass.hpp"
 #include "Race/HeroRace.hpp"
 

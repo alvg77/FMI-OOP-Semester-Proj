@@ -2,7 +2,7 @@
 
 #include <nlohmann/json.hpp>
 
-#include "../../Entity/NPEntity.hpp"
+#include "../../NPEntity/NPEntity.hpp"
 
 Cell::Cell(NPEntity* entity) : entity(entity) {}
 

@@ -5,12 +5,12 @@
 
 #include "../../Game/Interactions/InteractionsManager.hpp"
 
-Item::Item(const std::string& name, const double bonus, const ItemType itemType)
-    : name(name), bonus(bonus), itemType(itemType) {}
+Item::Item(const std::string& name, const double mult, const ItemType itemType)
+    : name(name), mult(mult), itemType(itemType) {}
 
 std::string Item::getName() const { return name; }
 
-double Item::getBonus() const { return bonus; }
+double Item::getMult() const { return mult; }
 
 ItemType Item::getItemType() const { return itemType; }
 
@@ -44,7 +44,7 @@ std::ostream& operator<<(std::ostream& os, const Item& item) {
       itemType = "Armor";
   }
 
-  os << "<" << item.name << ", Mult: " << item.bonus << ", " << itemType << ">";
+  os << "<" << item.name << ", Mult: " << item.mult << ", " << itemType << ">";
   return os;
 }
 
@@ -54,7 +54,7 @@ nlohmann::json Item::toJson() const {
   json itemJson;
 
   itemJson["name"] = name;
-  itemJson["bonus"] = bonus;
+  itemJson["mult"] = mult;
   itemJson["itemtype"] = itemType;
 
   return itemJson;

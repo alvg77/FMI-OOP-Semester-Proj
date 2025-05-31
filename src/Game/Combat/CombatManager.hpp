@@ -10,7 +10,7 @@
 #ifndef COMBATMANAGER_HPP
 #define COMBATMANAGER_HPP
 
-#include "../../Entity/Creature/Monster/Monster.hpp"
+#include "../../NPEntity/Monster/Monster.hpp"
 #include "CoinToss.hpp"
 
 class Monster;

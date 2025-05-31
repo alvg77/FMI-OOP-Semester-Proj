@@ -3,7 +3,7 @@
 #include <iostream>
 #include <random>
 
-#include "../../Entity/Creature/Hero/Hero.hpp"
+#include "../../Hero/Hero.hpp"
 #include "../../Util/Util.hpp"
 #include "../Interactions/InteractionsManager.hpp"
 

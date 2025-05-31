@@ -2,9 +2,9 @@
 
 #include <nlohmann/json.hpp>
 
-#include "../../Item/Item.hpp"
-#include "../../Item/ItemFactory.hpp"
-#include "../Stats.hpp"
+#include "../NPEntity/Item/Item.hpp"
+#include "../NPEntity/Item/ItemFactory.hpp"
+#include "../Stats/Stats.hpp"
 #include "Hero.hpp"
 
 Hero* HeroFactory::createHero(const std::string& name, const unsigned level,
@@ -34,6 +34,10 @@ Hero* HeroFactory::createHeroFromJson(const nlohmann::json& heroJson) {
 
   const double currentHealth = heroJson["currenthealth"].get<double>();
 
+  if (currentHealth <= 0) {
+    throw std::invalid_argument("Invalid value for 'currenthealth' in hero JSON");
+  }
+
   json itemsJson = heroJson["items"];
 
   Item *armor = nullptr, *weapon = nullptr, *spell = nullptr;
@@ -62,6 +66,7 @@ Stats HeroFactory::getInitialStats(const HeroClass hClass) {
     case HeroClass::MAGE:
       return {10, 20, 40};
   }
+  throw std::invalid_argument("Invalid hero class! Cannot assign initial stats!");
 }
 
 Stats HeroFactory::getRacialBonus(const HeroRace race) {
@@ -71,4 +76,5 @@ Stats HeroFactory::getRacialBonus(const HeroRace race) {
     case HeroRace::ELF:
       return {0, 5, 10};
   }
+  throw std::invalid_argument("Invalid hero race! Cannot assign racial bonus!");
 }

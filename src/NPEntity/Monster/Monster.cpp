@@ -3,10 +3,10 @@
 #include <iostream>
 #include <nlohmann/json.hpp>
 
-#include "../../../Game/Combat/CombatManager.hpp"
-#include "../../../Game/Interactions/InteractionsManager.hpp"
-#include "../Hero/Hero.hpp"
-#include "../Stats.hpp"
+#include "../../Game/Combat/CombatManager.hpp"
+#include "../../Game/Interactions/InteractionsManager.hpp"
+#include "../../Hero/Hero.hpp"
+#include "../../Stats/Stats.hpp"
 
 Monster::Monster(const std::string& name, const unsigned level,
                  const Stats& stats, const double scalesDefenceMult)

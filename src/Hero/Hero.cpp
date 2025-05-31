@@ -2,8 +2,8 @@
 
 #include <nlohmann/json.hpp>
 
-#include "../../Item/Item.hpp"
-#include "../Monster/Monster.hpp"
+#include "../NPEntity/Item/Item.hpp"
+#include "../NPEntity/Monster/Monster.hpp"
 
 Hero::Hero(const std::string& name, const unsigned level, const Stats& stats,
            const double currentHealth, const HeroRace heroRace,
@@ -73,7 +73,7 @@ void Hero::dealDamage(Monster& monster, const AttackType attackType) const {
     case AttackType::WEAPON: {
       double weaponDamage = stats.strength;
       if (weapon != nullptr) {
-        weaponDamage += weapon->getBonus() * weaponDamage;
+        weaponDamage += weapon->getMult() * weaponDamage;
       }
       monster.takeDamage(weaponDamage);
       break;
@@ -81,7 +81,7 @@ void Hero::dealDamage(Monster& monster, const AttackType attackType) const {
     case AttackType::SPELL: {
       double spellDamage = stats.mana;
       if (spell != nullptr) {
-        spellDamage += spell->getBonus() * spellDamage;
+        spellDamage += spell->getMult() * spellDamage;
       }
       monster.takeDamage(spellDamage);
       break;
@@ -91,7 +91,7 @@ void Hero::dealDamage(Monster& monster, const AttackType attackType) const {
 
 void Hero::takeDamage(double damage) {
   if (armor != nullptr) {
-    damage -= armor->getBonus() * damage;
+    damage -= armor->getMult() * damage;
   }
   currentHealth -= damage;
 }
@@ -132,12 +132,12 @@ void Hero::displayStats(std::ostream& os) const {
 
 void Hero::displayAttackDmg(std::ostream& os) const {
   std::cout << "Weapon attack damage: "
-            << (weapon != nullptr ? stats.strength * (1 + weapon->getBonus())
+            << (weapon != nullptr ? stats.strength * (1 + weapon->getMult())
                                   : stats.strength)
             << std::endl;
 
   std::cout << "Spell attack damage: "
-            << (spell != nullptr ? stats.mana * (1 + spell->getBonus())
+            << (spell != nullptr ? stats.mana * (1 + spell->getMult())
                                  : stats.mana)
             << std::endl;
 }
@@ -145,7 +145,7 @@ void Hero::displayAttackDmg(std::ostream& os) const {
 void Hero::displayStatus(std::ostream& os) const {
   os << name << ": " << (currentHealth >= 0 ? currentHealth : 0) << "/"
      << stats.maxHealth << std::endl;
-  os << "Resistence: " << (armor != nullptr ? armor->getBonus() : 0)
+  os << "Resistence: " << (armor != nullptr ? armor->getMult() : 0)
      << std::endl;
 }
 
@@ -158,7 +158,7 @@ void Hero::displayLoadout(std::ostream& os) const {
 
   if (weapon != nullptr) {
     os << *weapon << std::endl;
-    os << "Weapon damage: " << stats.strength * (1 + weapon->getBonus())
+    os << "Weapon damage: " << stats.strength * (1 + weapon->getMult())
        << std::endl;
   } else {
     os << "No weapon equipped." << std::endl;
@@ -166,7 +166,7 @@ void Hero::displayLoadout(std::ostream& os) const {
 
   if (spell != nullptr) {
     os << *spell << std::endl;
-    os << "Spell damage: " << stats.mana * (1 + spell->getBonus()) << std::endl;
+    os << "Spell damage: " << stats.mana * (1 + spell->getMult()) << std::endl;
   } else {
     os << "No spell equipped." << std::endl;
   }

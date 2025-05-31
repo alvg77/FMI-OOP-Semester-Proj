@@ -50,6 +50,9 @@ class HeroFactory {
    *
    * @param heroJson The JSON object containing hero data.
    * @return Pointer to the created Hero instance.
+   * @throws std::invalid_argument if any required fields are missing,
+   *         or if current health is non-positive.
+   * @throws nlohmann::json::exception if JSON keys have wrong types.
    */
   static Hero* createHeroFromJson(const nlohmann::json& heroJson);
 
@@ -59,6 +62,7 @@ class HeroFactory {
    *
    * @param hClass The hero class.
    * @return Stats structure with base values for the class.
+   * @throws std::invalid_argument if the hero class is invalid.
    */
   static Stats getInitialStats(HeroClass hClass);
 
@@ -67,6 +71,7 @@ class HeroFactory {
    *
    * @param race The hero race.
    * @return Stats structure with bonus values for the race.
+   * @throws std::invalid_argument if the hero class is invalid.
    */
   static Stats getRacialBonus(HeroRace race);
 };

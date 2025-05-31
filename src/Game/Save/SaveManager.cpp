@@ -4,10 +4,10 @@
 #include <nlohmann/json.hpp>
 #include <stdexcept>
 
-#include "../../Entity/Creature/Hero/Hero.hpp"
-#include "../../Entity/Creature/Hero/HeroFactory.hpp"
 #include "../../Map/Map.hpp"
 #include "../../Map/MapFactory.hpp"
+#include "../../Hero/Hero.hpp"
+#include "../../Hero/HeroFactory.hpp"
 #include "../GameContext.hpp"
 
 enum class ItemType;

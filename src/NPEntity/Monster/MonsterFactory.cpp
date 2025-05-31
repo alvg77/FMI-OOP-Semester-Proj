@@ -2,7 +2,7 @@
 
 #include <nlohmann/json.hpp>
 
-#include "../Stats.hpp"
+#include "../../Stats/Stats.hpp"
 #include "Monster.hpp"
 
 Monster* MonsterFactory::createMonster(const std::string& name,
@@ -21,6 +21,10 @@ NPEntity* MonsterFactory::createMonsterFromJson(
   const unsigned level = monsterJson["level"].get<unsigned>();
   const double scalesDefenceMult =
       monsterJson["scalesdefencemult"].get<double>();
+
+  if (scalesDefenceMult < 0) {
+    throw std::runtime_error("Invalid value for 'scalesdefencemult' in monster JSON");
+  }
 
   Stats stats{};
   stats.strength = monsterJson["strength"].get<unsigned>();

@@ -33,6 +33,8 @@ class MapFactory {
    * @brief Creates a Map instance from JSON data.
    * @param mapJson JSON object representing the serialized map data.
    * @return Pointer to the newly created Map object.
+   * @throws std::runtime_error if invalid values for monster and treasure
+   * coordinates are out of bounds when reading them from JSON.
    *
    * This method reconstructs the map grid, including walls, monsters, and
    * items, from the JSON representation.

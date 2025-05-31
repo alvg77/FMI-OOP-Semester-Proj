@@ -10,8 +10,8 @@
 #include <iostream>
 #include <nlohmann/json_fwd.hpp>
 
-#include "../../NPEntity.hpp"
-#include "../Stats.hpp"
+#include "../NPEntity.hpp"
+#include "../../Stats/Stats.hpp"
 
 /**
  * @brief Represents a monster entity that the hero can encounter and fight.

@@ -29,7 +29,7 @@ class ItemFactory {
    * @param itemJson A JSON object containing fields: "name", "bonus", and
    * "itemtype".
    * @return A dynamically allocated Item as a NPEntity pointer.
-   */
+   * @throws nlohmann::json::exception if required fields are missing or of incorrect type.   */
   static NPEntity* createItemFromJson(const nlohmann::json& itemJson);
 };
 

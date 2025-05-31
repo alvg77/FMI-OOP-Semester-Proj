@@ -21,10 +21,11 @@ GameManager::~GameManager() {
 }
 
 void GameManager::runGameLoop() {
-  std::cout << "1. New Game\n2. Load Game\n3. Exit Game" << std::endl;
   bool correctChoice;
 
   do {
+    std::cout << "1. New Game\n2. Load Game\n3. Exit Game" << std::endl;
+
     unsigned short choice;
     std::cin >> choice;
     std::cin.ignore(1000, '\n');
@@ -33,7 +34,15 @@ void GameManager::runGameLoop() {
       case 1:
         level = 1;
         ctx.hero = CharacterCreator::createHero();
-        ctx.map = MapFactory::createMap(level);
+        try {
+          ctx.map = MapFactory::createMap(level);
+        } catch (const std::exception& e) {
+          std::cout
+              << "Encountered an error while creating map! Exiting game..."
+              << std::endl;
+          std::cout << e.what() << std::endl;
+          exit(0);
+        }
         correctChoice = true;
         break;
       case 2:
@@ -41,8 +50,12 @@ void GameManager::runGameLoop() {
           ctx = SaveManager::loadGame();
           correctChoice = true;
         } catch (const std::exception& e) {
+          std::cout << "Encountered a problem with reading save file! Data might be corrupted."
+                    << std::endl;
           std::cout << e.what() << std::endl;
+          InteractionsManager::promptContinue();
           correctChoice = false;
+          Util::clearTerminal();
         }
         break;
       default:

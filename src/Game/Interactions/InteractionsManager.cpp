@@ -2,8 +2,8 @@
 
 #include <iostream>
 
-#include "../../Entity/Creature/Hero/Hero.hpp"
-#include "../../Entity/Item/Item.hpp"
+#include "../../NPEntity/Item/Item.hpp"
+#include "../../Hero/Hero.hpp"
 #include "../../Util/Util.hpp"
 
 void InteractionsManager::promptHeroItemEquip(Hero& hero, const Item* item) {

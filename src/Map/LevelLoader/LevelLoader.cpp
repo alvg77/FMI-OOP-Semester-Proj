@@ -3,11 +3,11 @@
 #include <fstream>
 #include <random>
 
-#include "../../Entity/Creature/Monster/Monster.hpp"
-#include "../../Entity/Creature/Monster/MonsterFactory.hpp"
-#include "../../Entity/Creature/Stats.hpp"
-#include "../../Entity/Item/Item.hpp"
-#include "../../Entity/Wall/Wall.hpp"
+#include "../../NPEntity/Item/Item.hpp"
+#include "../../NPEntity/Monster/Monster.hpp"
+#include "../../NPEntity/Monster/MonsterFactory.hpp"
+#include "../../Stats/Stats.hpp"
+#include "../../NPEntity/Wall/Wall.hpp"
 #include "../Cell/Cell.hpp"
 #include "../LoadedLevel.hpp"
 #include "../Map.hpp"

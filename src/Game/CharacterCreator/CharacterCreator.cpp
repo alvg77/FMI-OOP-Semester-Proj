@@ -2,10 +2,10 @@
 
 #include <iostream>
 
-#include "../../Entity/Creature/Hero/Hero.hpp"
-#include "../../Entity/Creature/Hero/HeroFactory.hpp"
-#include "../../Entity/Item/Item.hpp"
-#include "../../Entity/Item/ItemType.hpp"
+#include "../../NPEntity/Item/Item.hpp"
+#include "../../NPEntity/Item/ItemType.hpp"
+#include "../../Hero/Hero.hpp"
+#include "../../Hero/HeroFactory.hpp"
 
 Hero* CharacterCreator::createHero() {
   std::string name;
