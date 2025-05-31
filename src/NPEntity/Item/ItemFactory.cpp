@@ -13,7 +13,7 @@ NPEntity* ItemFactory::createItemFromJson(const nlohmann::json& itemJson) {
     throw std::runtime_error("Invalid value for item bonus!");
   }
 
-  const ItemType itemType = static_cast<ItemType>(itemJson["itemtype"].get<unsigned>()); // TODO: add a helper that does that
+  const ItemType itemType = getItemType(itemJson["itemtype"].get<std::string>());
 
   return new Item(name, mult, itemType);
 }

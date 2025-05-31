@@ -183,8 +183,8 @@ nlohmann::json Hero::toJson() const {
   heroJson["mana"] = stats.mana;
   heroJson["maxhealth"] = stats.maxHealth;
   heroJson["currenthealth"] = currentHealth;
-  heroJson["race"] = heroRace;
-  heroJson["class"] = heroClass;
+  heroJson["race"] = getHeroRaceName(heroRace);
+  heroJson["class"] = getHeroClassName(heroClass);
 
   std::vector<json> itemsJson;
 

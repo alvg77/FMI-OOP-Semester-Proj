@@ -55,7 +55,7 @@ nlohmann::json Item::toJson() const {
 
   itemJson["name"] = name;
   itemJson["mult"] = mult;
-  itemJson["itemtype"] = itemType;
+  itemJson["itemtype"] = getItemTypeName(itemType);
 
   return itemJson;
 }

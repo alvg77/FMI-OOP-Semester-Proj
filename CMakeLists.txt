@@ -57,6 +57,8 @@ add_executable(FMI_OOP_Semester_Proj
         src/Map/MapFactory.hpp
         src/NPEntity/Item/ItemType.cpp
         src/Game/Combat/CoinToss.cpp
+        src/Hero/Class/HeroClass.cpp
+        src/Hero/Race/HeroRace.cpp
 )
 
 add_executable(FMI_OOP_Semester_Proj_Level_Editor

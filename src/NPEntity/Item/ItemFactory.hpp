@@ -23,13 +23,14 @@ class ItemFactory {
   /**
    * @brief Creates an Item from a JSON object.
    *
-   * Parses the item name, bonus, and type from the JSON structure and returns a
+   * Parses the item name, multiplier (bonus), and type from the JSON structure and returns a
    * pointer to a new Item instance wrapped as an NPEntity.
    *
-   * @param itemJson A JSON object containing fields: "name", "bonus", and
-   * "itemtype".
+   * @param itemJson A JSON object containing fields: "name", "mult", and "itemtype".
    * @return A dynamically allocated Item as a NPEntity pointer.
-   * @throws nlohmann::json::exception if required fields are missing or of incorrect type.   */
+   * @throws std::runtime_error if the multiplier value is negative.
+   * @throws nlohmann::json::exception if required fields are missing or have incorrect types.
+   */
   static NPEntity* createItemFromJson(const nlohmann::json& itemJson);
 };
 

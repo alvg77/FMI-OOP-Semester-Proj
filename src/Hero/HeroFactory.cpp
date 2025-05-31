@@ -22,10 +22,8 @@ Hero* HeroFactory::createHeroFromJson(const nlohmann::json& heroJson) {
 
   const std::string name = heroJson["name"].get<std::string>();
   const unsigned level = heroJson["level"].get<unsigned>();
-  const HeroRace heroRace =
-      static_cast<HeroRace>(heroJson["race"].get<unsigned>());
-  const HeroClass heroClass =
-      static_cast<HeroClass>(heroJson["class"].get<unsigned>());
+  const HeroRace heroRace = getHeroRace(heroJson["race"].get<std::string>());
+  const HeroClass heroClass = getHeroClass(heroJson["class"].get<std::string>());
 
   Stats stats{};
   stats.strength = heroJson["strength"].get<unsigned>();
