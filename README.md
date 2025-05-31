@@ -14,6 +14,9 @@ OOP course.
 - `conanfile.py` — Conan dependencies
 
 ---
+
+## 🚀 How to Start the Project
+
 ### 1. Prerequisites
 
 Make sure the following are installed:
@@ -71,6 +74,50 @@ After building, the executable should be inside `cmake-build-debug/`. You can ru
 ```
 
 > Replace `<executable_name>` with the actual name of the output binary specified in `CMakeLists.txt`.
+
+---
+
+### 6. (Optional) Generating Documentation with Doxygen
+
+1. **Install Doxygen and Graphviz**
+
+   Visit the official websites to download and install the latest versions for your platform:
+
+  - [Doxygen](https://www.doxygen.nl/download.html)
+  - [Graphviz](https://graphviz.org/download/)
+
+2. **Generate a Default Configuration File**
+
+   From the project root directory, run:
+
+   ```bash
+   doxygen -g
+   ```
+
+   This creates a `Doxyfile` with default settings.
+
+3. **Configure the `Doxyfile`**
+
+   Open `Doxyfile` in a text editor and set key options such as:
+
+   ```ini
+   OUTPUT_DIRECTORY = docs
+   RECURSIVE = YES
+   EXCLUDE = conanfile.py \
+             conanfile.txt \
+             conandata.yml \
+             conan_provider.cmake
+   ```
+
+4. **Generate Documentation**
+
+   Run:
+
+   ```bash
+   doxygen Doxyfile
+   ```
+
+   The generated documentation will be in the `docs/html` folder. Open `index.html` in your browser to view it.
 
 ---
 

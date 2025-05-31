@@ -76,17 +76,3 @@ target_link_libraries(FMI_OOP_Semester_Proj PRIVATE nlohmann_json::nlohmann_json
 
 target_link_libraries(FMI_OOP_Semester_Proj_Level_Editor PRIVATE nlohmann_json::nlohmann_json)
 target_link_libraries(FMI_OOP_Semester_Proj_Level_Editor PRIVATE boost::boost)
-
-if (DOXYGEN_FOUND)
-    message(STATUS "Doxygen found. You can run 'make doc_doxygen' to generate documentation.")
-
-    set(DOXYGEN_IN ${CMAKE_SOURCE_DIR}/Doxyfile)
-
-    add_custom_target(doc_doxygen
-            COMMAND ${DOXYGEN_EXECUTABLE} ${DOXYGEN_IN}
-            WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
-            COMMENT "Generating API documentation with Doxygen"
-            VERBATIM)
-else ()
-    message(STATUS "Doxygen not found. Documentation won't be generated.")
-endif ()
