@@ -4,13 +4,8 @@
 #include <nlohmann/json.hpp>
 #include <random>
 
-#include "../Entity/Creature/Monster/Monster.hpp"
-#include "../Entity/Item/Item.hpp"
-#include "../Entity/Wall/Wall.hpp"
 #include "../Game/GameAction.hpp"
 #include "Cell/Cell.hpp"
-#include "LevelLoader/LevelLoader.hpp"
-#include "LevelLoader/LoadedLevel.hpp"
 
 Map::Map(const unsigned rows, const unsigned cols, const unsigned finishRow, const unsigned finishCol,
          const unsigned playerRow, const unsigned playerCol,
@@ -89,7 +84,7 @@ void Map::display(std::ostream& os) const {
   }
 }
 
-json Map::toJson() const {
+nlohmann::json Map::toJson() const {
   using nlohmann::json;
 
   json mapJson;

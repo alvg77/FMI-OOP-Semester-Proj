@@ -12,6 +12,8 @@ Map* MapFactory::createMap(const unsigned level) {
 }
 
 Map* MapFactory::createMapFromJson(const nlohmann::json& mapJson) {
+  using nlohmann::json;
+
   const unsigned cols = mapJson["columns"];
   const unsigned rows = mapJson["rows"];
   const unsigned playerRow = mapJson["playerRow"];

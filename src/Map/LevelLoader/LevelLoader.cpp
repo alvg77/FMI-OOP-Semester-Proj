@@ -9,8 +9,8 @@
 #include "../../Entity/Item/Item.hpp"
 #include "../../Entity/Wall/Wall.hpp"
 #include "../Cell/Cell.hpp"
+#include "../LoadedLevel.hpp"
 #include "../Map.hpp"
-#include "LoadedLevel.hpp"
 
 std::mt19937 LevelLoader::rng = std::mt19937(std::random_device{}());
 const std::string LevelLoader::levelFileLocation = "../data/levels/level";
@@ -19,6 +19,8 @@ const std::string LevelLoader::monstersFileLocation =
 const std::string LevelLoader::itemsFileLocation = "../data/items/items";
 
 Map* LevelLoader::load(const unsigned n) {
+  using nlohmann::json;
+
   const std::string levelPath =
       LevelLoader::levelFileLocation + std::to_string(n) + ".json";
 
@@ -58,7 +60,7 @@ Map* LevelLoader::load(const unsigned n) {
   return new Map(level.rows, level.cols, level.finishRow, level.finishCol, level.playerRow, level.playerCol, level.grid);
 }
 
-void LevelLoader::validateLevelJson(const json& data) {
+void LevelLoader::validateLevelJson(const nlohmann::json& data) {
   const std::vector<std::string> requiredFields = {"columns", "rows", "grid",
                                                    "monsterN", "treasureN"};
 
@@ -75,7 +77,9 @@ void LevelLoader::validateLevelJson(const json& data) {
   }
 }
 
-json LevelLoader::readJson(const std::string& path) {
+nlohmann::json LevelLoader::readJson(const std::string& path) {
+  using nlohmann::json;
+
   std::ifstream file(path);
   if (!file.is_open()) {
     throw std::runtime_error("Could not open JSON file: " + path);
@@ -88,9 +92,11 @@ json LevelLoader::readJson(const std::string& path) {
 }
 
 void LevelLoader::parseGrid(
-    const json& jsonGrid, std::vector<std::vector<Cell*>>& grid,
+    const nlohmann::json& jsonGrid, std::vector<std::vector<Cell*>>& grid,
     std::vector<std::pair<unsigned, unsigned>>& freeSpaces,
     const unsigned cols) {
+  using nlohmann::json;
+
   const unsigned rows = jsonGrid.size();
   grid.resize(rows);
 
@@ -123,6 +129,8 @@ void LevelLoader::parseGrid(
 
 std::vector<NPEntity*> LevelLoader::loadItems(const unsigned count,
                                               const unsigned n) {
+  using nlohmann::json;
+
   json data = readJson(itemsFileLocation + std::to_string(n) + ".json");
 
   if (!data.contains("items")) {
@@ -153,6 +161,8 @@ std::vector<NPEntity*> LevelLoader::loadItems(const unsigned count,
 
 std::vector<NPEntity*> LevelLoader::loadMonsters(const unsigned count,
                                                  const unsigned n) {
+  using nlohmann::json;
+
   json data =
       readJson(LevelLoader::monstersFileLocation + std::to_string(n) + ".json");
 

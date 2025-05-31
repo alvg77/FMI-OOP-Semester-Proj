@@ -1,3 +1,8 @@
+/**
+ * @defgroup Game
+ * Game related classes and functions
+ */
+
 #include "Game/GameManager.hpp"
 
 int main() {
