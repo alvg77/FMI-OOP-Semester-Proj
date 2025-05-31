@@ -75,7 +75,11 @@ class Item final : public NPEntity {
 
   /**
    * @brief Serializes the item to a JSON object.
+   *
+   * Converts the item’s properties — name, multiplier, and item type — into a JSON representation.
+   *
    * @return A JSON object representing the item's state.
+   * @throws nlohmann::json::exception if serialization fails.
    */
   nlohmann::json toJson() const override;
 

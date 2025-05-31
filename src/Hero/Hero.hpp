@@ -138,9 +138,13 @@ class Hero {
   void displayLoadout(std::ostream& os = std::cout) const;
 
   /**
-   * @brief Serializes the hero to JSON format.
+   * @brief Serializes the hero to a JSON object.
+   *
+   * Converts the hero's attributes such as name, level, stats, health,
+   * race, class, and equipped items into a JSON representation.
    *
    * @return A JSON object representing the hero.
+   * @throws nlohmann::json::exception if serialization fails.
    */
   nlohmann::json toJson() const;
 

@@ -10,8 +10,8 @@
 #include <iostream>
 #include <nlohmann/json_fwd.hpp>
 
-#include "../NPEntity.hpp"
 #include "../../Stats/Stats.hpp"
+#include "../NPEntity.hpp"
 
 /**
  * @brief Represents a monster entity that the hero can encounter and fight.
@@ -93,7 +93,11 @@ class Monster final : public NPEntity {
   /**
    * @brief Serializes the monster to a JSON object.
    *
+   * Converts the monster’s attributes such as name, level, stats, and defense
+   * multiplier into a JSON representation.
+   *
    * @return JSON representation of the monster.
+   * @throws nlohmann::json::exception if serialization fails.
    */
   nlohmann::json toJson() const override;
 

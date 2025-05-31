@@ -75,8 +75,15 @@ class Map {
   void display(std::ostream& os = std::cout) const;
 
   /**
-   * @brief Serializes the map state to a JSON object.
-   * @return nlohmann::json representation of the current map state.
+   * @brief Serializes the current map state into a JSON object.
+   *
+   * This includes dimensions (rows, columns), player and finish positions,
+   * a grid representation (where walls are marked as 1 and paths as 0),
+   * and lists of monsters and treasures with their respective positions and details.
+   *
+   * @return A nlohmann::json object representing the full state of the map.
+   * @throws std::runtime_error if an unknown grid symbol is encountered during serialization.
+   * @throws nlohmann::json::exception if JSON serialization fails due to invalid operations.
    */
   nlohmann::json toJson() const;
 
