@@ -1,6 +1,6 @@
 /**
  * @file Maze.hpp
- * @ingroup Level Editor
+ * @ingroup Editor
  * @brief Defines the Maze class representing a grid of walls and paths.
  */
 

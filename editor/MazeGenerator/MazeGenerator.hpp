@@ -1,6 +1,6 @@
 /**
  * @file MazeGenerator.hpp
- * @ingroup Level Editor
+ * @ingroup Editor
  * @brief Generates mazes using depth-first search algorithm.
  */
 

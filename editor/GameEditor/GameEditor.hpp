@@ -1,6 +1,6 @@
 /**
  * @file GameEditor.hpp
- * @ingroup Level Editor
+ * @ingroup Editor
  * @brief Provides tools to create and edit game levels.
  */
 

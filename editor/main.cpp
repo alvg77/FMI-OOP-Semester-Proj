@@ -1,5 +1,5 @@
 /**
- * @defgroup Level Editor
+ * @defgroup Editor
  * Level editor related classes and functions
  */
 
