@@ -1,6 +1,6 @@
 /**
  * @file CellState.hpp
- * @ingroup LevelEditor
+ * @ingroup Level Editor
  * @brief Defines the CellState enum representing maze cell states.
  */
 
