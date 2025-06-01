@@ -63,9 +63,39 @@ Compile the source code:
 cmake --build cmake-build-debug --target FMI_OOP_Semester_Proj -j 8
 ```
 
+***The same steps can be followed for building the level editor, which is located in the `/level` folder.***
+
 ---
 
-### 5. Run the Game
+### 5. Ensure you have the required JSON files for the game
+
+At the root of the project there should be a `data` folder. Inside it there will be 3 folders (a fourth one for the save
+files will be created after saving the game for the first time). The 3 folders will be:
+
+```bash
+/levels
+  level1.json
+  level2.json
+  ...
+/items
+  items1.json
+  items2.json
+  ...
+/monsters
+  monsters1.json
+  monsters2.json
+  ...
+```
+
+Each of those contains json files with data about a level in the game. Without those files you cannot start the game. As
+of now there are 4 distinct levels that the player has to complete so each folder should contain 4 json files, each one
+corresponding to a level. To create new maps for a level (1-4), you can use the level editor utility, which generates a
+random map for the level, there you can also specify the number of monsters and treasures you can encounter on the
+level.
+
+---
+
+### 6. Run the Game
 
 After building, the executable should be inside `cmake-build-debug/`. You can run it with:
 
@@ -77,14 +107,14 @@ After building, the executable should be inside `cmake-build-debug/`. You can ru
 
 ---
 
-### 6. (Optional) Generating Documentation with Doxygen
+### 7. (Optional) Generating Documentation with Doxygen
 
 1. **Install Doxygen and Graphviz**
 
    Visit the official websites to download and install the latest versions for your platform:
 
-  - [Doxygen](https://www.doxygen.nl/download.html)
-  - [Graphviz](https://graphviz.org/download/)
+- [Doxygen](https://www.doxygen.nl/download.html)
+- [Graphviz](https://graphviz.org/download/)
 
 2. **Generate a Default Configuration File**
 
@@ -126,9 +156,9 @@ After building, the executable should be inside `cmake-build-debug/`. You can ru
 - Integrate a graphical interface using **SFML**
 - Add music and sound effects
 - Implement advanced gameplay mechanics:
-  - Traps
-  - Player and enemy skills
-  - Consumable items (e.g., potions, buffs)
-  - Limited vision system — restrict visibility to the player’s surroundings, hiding unexplored areas
+    - Traps
+    - Player and enemy skills
+    - Consumable items (e.g., potions, buffs)
+    - Limited vision system — restrict visibility to the player’s surroundings, hiding unexplored areas
 - Introduce more playable **classes** and **races**
 
