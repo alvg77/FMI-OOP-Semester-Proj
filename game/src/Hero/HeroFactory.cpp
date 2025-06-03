@@ -13,7 +13,7 @@ Hero* HeroFactory::createHero(const std::string& name, const unsigned level,
                               Item* spell, Item* armor) {
   const Stats stats = getInitialStats(heroClass) + getRacialBonus(heroRace);
 
-  return new Hero(name, level, stats, stats.maxHealth, heroRace, heroClass,
+  return new Hero(name, level, stats, stats.maxHealth, 0, heroRace, heroClass,
                   weapon, spell, armor);
 }
 
@@ -22,6 +22,8 @@ Hero* HeroFactory::createHeroFromJson(const nlohmann::json& heroJson) {
 
   const std::string name = heroJson["name"].get<std::string>();
   const unsigned level = heroJson["level"].get<unsigned>();
+  const unsigned score = heroJson["score"].get<unsigned>();
+
   const HeroRace heroRace = getHeroRace(heroJson["race"].get<std::string>());
   const HeroClass heroClass = getHeroClass(heroJson["class"].get<std::string>());
 
@@ -54,7 +56,7 @@ Hero* HeroFactory::createHeroFromJson(const nlohmann::json& heroJson) {
     }
   }
 
-  return new Hero(name, level, stats, currentHealth, heroRace, heroClass, weapon, spell, armor);
+  return new Hero(name, level, stats, currentHealth, score, heroRace, heroClass, weapon, spell, armor);
 }
 
 Stats HeroFactory::getInitialStats(const HeroClass hClass) {

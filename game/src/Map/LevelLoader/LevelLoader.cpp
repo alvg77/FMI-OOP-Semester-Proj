@@ -13,10 +13,10 @@
 #include "../Map.hpp"
 
 std::mt19937 LevelLoader::rng = std::mt19937(std::random_device{}());
-const std::string LevelLoader::levelFileLocation = "../data/levels/level";
+const std::string LevelLoader::levelFileLocation = "../../data/levels/level";
 const std::string LevelLoader::monstersFileLocation =
-    "../data/monsters/monsters";
-const std::string LevelLoader::itemsFileLocation = "../data/items/items";
+    "../../data/monsters/monsters";
+const std::string LevelLoader::itemsFileLocation = "../../data/items/items";
 
 Map* LevelLoader::load(const unsigned n) {
   using nlohmann::json;

@@ -7,7 +7,7 @@
 #include "../Maze/Maze.hpp"
 #include "../MazeGenerator/MazeGenerator.hpp"
 
-const std::string GameEditor::levelMapLocation = "../data/levels/";
+const std::string GameEditor::levelMapLocation = "../../data/levels/";
 
 void GameEditor::editGameDetails() {
   std::cout << "-----------------" << std::endl;

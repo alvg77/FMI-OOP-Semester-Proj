@@ -50,10 +50,12 @@ class GameManager {
 
  private:
   static constexpr unsigned nlevels = 4;      ///< Total number of game levels
-  static const std::string saveFileLocation;  ///< Location of the save file
+  static const std::string scoreFileLocation;  ///< Location of the save file
 
   unsigned level;   ///< Current game level
   GameContext ctx;  ///< Current game context holding hero and map
+
+  static void showLeaderboard(std::ostream& os = std::cout) ;
 };
 
 #endif  // GAMEMANAGER_HPP

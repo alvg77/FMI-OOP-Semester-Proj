@@ -12,7 +12,7 @@
 
 enum class ItemType;
 
-const std::string SaveManager::saveFileLoc = "../data/save/savedata.json";
+const std::string SaveManager::saveFileLoc = "../../data/save/savedata.json";
 
 void SaveManager::save(const GameContext& ctx) {
   if (ctx.map == nullptr || ctx.hero == nullptr) {

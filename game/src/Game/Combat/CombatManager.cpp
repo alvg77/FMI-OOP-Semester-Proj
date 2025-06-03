@@ -51,6 +51,7 @@ void CombatManager::initiateCombat(Hero& hero, Monster& monster) {
   if (hero.isAlive()) {
     std::cout << "You have defeated the enemy!" << std::endl;
     hero.heal();
+    hero.incrementScore();
   } else {
     std::cout << "You have been defeated in combat!" << std::endl;
   }

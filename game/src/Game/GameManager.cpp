@@ -13,7 +13,7 @@
 
 GameManager::GameManager() : level(1), ctx({nullptr, nullptr}) {}
 
-const std::string GameManager::saveFileLocation = "../data/save/save.json";
+const std::string GameManager::scoreFileLocation = "../../data/score/score.json";
 
 GameManager::~GameManager() {
   delete ctx.hero;
@@ -24,7 +24,8 @@ void GameManager::runGameLoop() {
   bool correctChoice;
 
   do {
-    std::cout << "1. New Game\n2. Load Game\n3. Exit Game" << std::endl;
+    std::cout << "1. New Game\n2. Load Game\n3. Leaderboard\n4. Exit Game"
+              << std::endl;
 
     unsigned short choice;
     std::cin >> choice;
@@ -50,7 +51,8 @@ void GameManager::runGameLoop() {
           ctx = SaveManager::loadGame();
           correctChoice = true;
         } catch (const std::exception& e) {
-          std::cout << "Encountered a problem with reading save file! Data might be corrupted."
+          std::cout << "Encountered a problem with reading save file! Data "
+                       "might be corrupted."
                     << std::endl;
           std::cout << e.what() << std::endl;
           InteractionsManager::promptContinue();
@@ -58,6 +60,13 @@ void GameManager::runGameLoop() {
           Util::clearTerminal();
         }
         break;
+      case 3:
+        showLeaderboard();
+        Util::clearTerminal();
+        correctChoice = false;
+        break;
+      case 4:
+        exit(0);
       default:
         correctChoice = false;
     }
@@ -66,7 +75,7 @@ void GameManager::runGameLoop() {
   bool gameCompleted = false;
   while (!gameCompleted) {
     Util::clearTerminal();
-
+    ctx.hero->displayScore();
     ctx.map->display();
 
     const GameAction action = ControlsManager::getInputs();
@@ -86,6 +95,7 @@ void GameManager::runGameLoop() {
 
     if (!ctx.hero->isAlive()) {
       std::cout << "\n\n===GAME OVER===" << std::endl;
+      ctx.hero->saveScore(scoreFileLocation);
       return;
     }
 
@@ -94,6 +104,7 @@ void GameManager::runGameLoop() {
       if (level > nlevels) {
         std::cout << "\n\n===GAME COMPLETED===\n" << std::endl;
         std::cout << "Thanks for playing!" << std::endl;
+        ctx.hero->saveScore(scoreFileLocation);
         gameCompleted = true;
       } else {
         Util::clearTerminal();
@@ -106,4 +117,37 @@ void GameManager::runGameLoop() {
       }
     }
   }
+}
+
+void GameManager::showLeaderboard(std::ostream& os) {
+  using nlohmann::json;
+
+  Util::clearTerminal();
+
+  std::ifstream ifs (GameManager::scoreFileLocation);
+  if (!ifs.is_open()) {
+    std::cout << "Leaderboard is empty!" << std::endl;
+    return;
+  }
+
+  json leaderboard;
+  ifs >> leaderboard;
+
+  const std::vector<json> scoresData = leaderboard["leaderboard"].get<std::vector<json>>();
+
+  if (scoresData.empty()) {
+    std::cout << "Leaderboard is empty!" << std::endl;
+    return;
+  }
+
+  for (const json& scoreData : scoresData) {
+    os << "---------------" << std::endl;
+    os << "Player: " <<  scoreData["playername"].get<std::string>() << std::endl;
+    os << "Score: " << scoreData["score"].get<unsigned>() << std::endl;
+    os << "---------------" << std::endl;
+  }
+
+  ifs.close();
+
+  InteractionsManager::promptContinue();
 }

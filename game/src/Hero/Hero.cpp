@@ -1,17 +1,19 @@
 #include "Hero.hpp"
 
+#include <fstream>
 #include <nlohmann/json.hpp>
 
 #include "../NPEntity/Item/Item.hpp"
 #include "../NPEntity/Monster/Monster.hpp"
 
 Hero::Hero(const std::string& name, const unsigned level, const Stats& stats,
-           const double currentHealth, const HeroRace heroRace,
+           const double currentHealth, unsigned score, const HeroRace heroRace,
            const HeroClass heroClass, Item* weapon, Item* spell, Item* armor)
     : name(name),
       level(level),
       stats(stats),
       currentHealth(currentHealth),
+      score(score),
       heroRace(heroRace),
       heroClass(heroClass),
       armor(armor),
@@ -23,6 +25,7 @@ Hero::Hero(const Hero& other)
       level(other.level),
       stats(other.stats),
       currentHealth(other.currentHealth),
+      score(other.score),
       heroRace(other.heroRace),
       heroClass(other.heroClass),
       armor(nullptr),
@@ -125,6 +128,8 @@ void Hero::equipItem(Item* item) {
 
 bool Hero::isAlive() const { return currentHealth > 0; }
 
+std::string Hero::getName() const { return name; }
+
 void Hero::displayStats(std::ostream& os) const {
   os << "str: " << stats.strength << ", mana: " << stats.mana
      << ", max health: " << stats.maxHealth << std::endl;
@@ -172,6 +177,50 @@ void Hero::displayLoadout(std::ostream& os) const {
   }
 }
 
+void Hero::displayScore(std::ostream& os) {
+  os << "Score: " << score << std::endl;
+}
+
+void Hero::incrementScore() {
+  score += 100;
+}
+
+void Hero::saveScore(const std::string& location) const {
+  using nlohmann::json;
+
+  json scoreData;
+  scoreData["playername"] = name;
+  scoreData["score"] = score;
+
+  json scoresArray;
+
+  std::ifstream ifs(location);
+  if (ifs.is_open()) {
+    try {
+      ifs >> scoresArray;
+      if (!scoresArray["leaderboard"].is_array()) {
+        scoresArray["leaderboard"] = json::array();
+      }
+    } catch (...) {
+      scoresArray["leaderboard"] = json::array();
+    }
+    ifs.close();
+  } else {
+    scoresArray["leaderboard"] = json::array();
+  }
+
+  scoresArray["leaderboard"].push_back(scoreData);
+
+  std::ofstream ofs(location);
+  if (!ofs.is_open()) {
+    throw std::runtime_error("Cannot open score file for writing!");
+  }
+
+  ofs << scoresArray.dump(2);
+
+  ofs.close();
+}
+
 nlohmann::json Hero::toJson() const {
   using nlohmann::json;
 
@@ -183,6 +232,7 @@ nlohmann::json Hero::toJson() const {
   heroJson["mana"] = stats.mana;
   heroJson["maxhealth"] = stats.maxHealth;
   heroJson["currenthealth"] = currentHealth;
+  heroJson["score"] = score;
   heroJson["race"] = getHeroRaceName(heroRace);
   heroJson["class"] = getHeroClassName(heroClass);
 

@@ -41,7 +41,7 @@ class Hero {
    * @param armor Pointer to the equipped armor item.
    */
   Hero(const std::string& name, unsigned level, const Stats& stats,
-       double currentHealth, HeroRace heroRace, HeroClass heroClass,
+       double currentHealth, unsigned score, HeroRace heroRace, HeroClass heroClass,
        Item* weapon, Item* spell, Item* armor);
 
   /**
@@ -109,6 +109,8 @@ class Hero {
    */
   bool isAlive() const;
 
+  std::string getName() const;
+
   /**
    * @brief Displays hero stats to an output stream.
    *
@@ -137,6 +139,12 @@ class Hero {
    */
   void displayLoadout(std::ostream& os = std::cout) const;
 
+  void displayScore(std::ostream& os = std::cout) ;
+
+  void incrementScore();
+
+  void saveScore(const std::string& location) const;
+
   /**
    * @brief Serializes the hero to a JSON object.
    *
@@ -153,6 +161,7 @@ class Hero {
   unsigned level;        ///< Current level
   Stats stats;           ///< Hero's stats (e.g., strength, mana)
   double currentHealth;  ///< Current health
+  unsigned score;        ///< Hero's score
   HeroRace heroRace;     ///< Hero's race
   HeroClass heroClass;   ///< Hero's class
 
