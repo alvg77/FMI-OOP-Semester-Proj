@@ -262,6 +262,7 @@ void Hero::swap(Hero& other) noexcept {
   swap(level, other.level);
   swap(stats, other.stats);
   swap(currentHealth, other.currentHealth);
+  swap(score, other.score);
   swap(heroRace, other.heroRace);
   swap(heroClass, other.heroClass);
   swap(armor, other.armor);

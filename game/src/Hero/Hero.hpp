@@ -34,6 +34,7 @@ class Hero {
    * @param level The starting level of the hero.
    * @param stats The initial stat configuration.
    * @param currentHealth The hero's current health value.
+   * @param score The hero's score
    * @param heroRace The hero's race (e.g., Elf, Human).
    * @param heroClass The hero's class (e.g., Warrior, Mage).
    * @param weapon Pointer to the equipped weapon item.
@@ -109,8 +110,6 @@ class Hero {
    */
   bool isAlive() const;
 
-  std::string getName() const;
-
   /**
    * @brief Displays hero stats to an output stream.
    *
@@ -139,10 +138,33 @@ class Hero {
    */
   void displayLoadout(std::ostream& os = std::cout) const;
 
-  void displayScore(std::ostream& os = std::cout) ;
+  /**
+   * @brief Gets the hero's name.
+   *
+   * @return A string representing the hero's name.
+   */
+  std::string getName() const;
 
+  /**
+   * @brief Displays the hero's current score.
+   *
+   * @param os The output stream to print to (default is std::cout).
+   */
+  void displayScore(std::ostream& os = std::cout);
+
+  /**
+   * @brief Increments the hero's score by a fixed amount.
+   *
+   * Adds 100 points to the current score.
+   */
   void incrementScore();
 
+  /**
+   * @brief Saves the hero's score to a specified location.
+   *
+   * @param location The file path where the score will be saved.
+   * @throws std::runtime_error if the file cannot be opened for writing.
+   */
   void saveScore(const std::string& location) const;
 
   /**

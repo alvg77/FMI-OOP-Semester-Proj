@@ -49,13 +49,19 @@ class GameManager {
   void runGameLoop();
 
  private:
-  static constexpr unsigned nlevels = 4;      ///< Total number of game levels
+  static constexpr unsigned nlevels = 4;       ///< Total number of game levels
   static const std::string scoreFileLocation;  ///< Location of the save file
 
   unsigned level;   ///< Current game level
   GameContext ctx;  ///< Current game context holding hero and map
 
-  static void showLeaderboard(std::ostream& os = std::cout) ;
+  /**
+   * @brief Displays the leaderboard loaded from the score file.
+   *
+   * @param os Output stream to write leaderboard data to. Defaults to
+   * std::cout.
+   */
+  static void showLeaderboard(std::ostream& os = std::cout);
 };
 
 #endif  // GAMEMANAGER_HPP
