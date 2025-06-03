@@ -50,6 +50,10 @@ void Monster::displayStatus(std::ostream& os) const {
   os << "Resistance: " << scalesDefenceMult << std::endl;
 }
 
+double Monster::getCurrentHealth() const {
+  return currentHealth;
+}
+
 nlohmann::json Monster::toJson() const {
   using nlohmann::json;
   json monsterJson;

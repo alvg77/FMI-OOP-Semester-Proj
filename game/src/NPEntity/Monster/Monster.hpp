@@ -91,6 +91,12 @@ class Monster final : public NPEntity {
   void displayStatus(std::ostream& os = std::cout) const;
 
   /**
+   *
+   * @return current health of the monster.
+   */
+  double getCurrentHealth() const;
+
+  /**
    * @brief Serializes the monster to a JSON object.
    *
    * Converts the monster’s attributes such as name, level, stats, and defense
