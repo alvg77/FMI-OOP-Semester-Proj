@@ -62,6 +62,7 @@ void GameManager::runGameLoop() {
         break;
       case 3:
         showLeaderboard();
+        InteractionsManager::promptContinue();
         Util::clearTerminal();
         correctChoice = false;
         break;
@@ -148,6 +149,4 @@ void GameManager::showLeaderboard(std::ostream& os) {
   }
 
   ifs.close();
-
-  InteractionsManager::promptContinue();
 }

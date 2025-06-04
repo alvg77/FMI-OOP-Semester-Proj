@@ -38,7 +38,7 @@ Make sure the following are installed:
 Use Conan to install all required packages into the build folder:
 
 ```bash
-conan install . --output-folder=cmake-build-debug --build=missing -s build_type=Debug
+conan install . --output-folder=cmake-build-debug --build=missing
 ```
 
 ---
@@ -48,9 +48,11 @@ conan install . --output-folder=cmake-build-debug --build=missing -s build_type=
 Generate the build files using the Conan toolchain:
 
 ```bash
-cmake -S . -B cmake-build-debug \
-  -DCMAKE_TOOLCHAIN_FILE=conan_provider.cmake \
-  -DCMAKE_BUILD_TYPE=Debug
+cd cmake-build-debug
+```
+
+```
+cmake .. -DCMAKE_TOOLCHAIN_FILE=build/Release/generators/conan_toolchain.cmake -DCMAKE_BUILD_TYPE=Release
 ```
 
 ---
@@ -60,7 +62,7 @@ cmake -S . -B cmake-build-debug \
 Compile the source code:
 
 ```bash
-cmake --build cmake-build-debug --target FMI_OOP_Semester_Proj -j 8
+cmake --build .
 ```
 
 ***The same steps can be followed for building the level editor, which is located in the `/level` folder.***
@@ -100,7 +102,7 @@ level.
 After building, the executable should be inside `cmake-build-debug/`. You can run it with:
 
 ```bash
-./cmake-build-debug/<executable_name>
+./cmake-build-debug/<game or editor>/<executable_name>
 ```
 
 > Replace `<executable_name>` with the actual name of the output binary specified in `CMakeLists.txt`.
