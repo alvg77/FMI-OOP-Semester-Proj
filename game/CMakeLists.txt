@@ -59,8 +59,8 @@ target_link_libraries(game_lib PUBLIC nlohmann_json::nlohmann_json)
 add_executable(game_exec src/main.cpp)
 target_link_libraries(game_exec PRIVATE game_lib)
 
-add_custom_target(make_dirs ALL
-        COMMAND ${CMAKE_COMMAND} -E make_directory ../data/save
-        COMMAND ${CMAKE_COMMAND} -E make_directory ../data/score
-        COMMENT "Creating folder1 and folder2"
+add_custom_target(make_data_dirs ALL
+        COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_SOURCE_DIR}/data/save
+        COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_SOURCE_DIR}/data/score
+        COMMENT "Creating save and score directories in the source folder"
 )
